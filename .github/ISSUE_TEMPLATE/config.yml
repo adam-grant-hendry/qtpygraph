@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions/Help/Support
+    url: https://github.com/adam-grant-hendry/qtpygraph/discussions
+    about: Have a question? Please post on the Discussions tab.

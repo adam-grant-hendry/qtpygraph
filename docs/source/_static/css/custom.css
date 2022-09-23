@@ -1,0 +1,12 @@
+table.image-container {
+  border: none;
+  text-align: center;
+}
+td.label {
+  font-weight: bold;
+  text-align: center;
+}
+
+div.justified-text {
+  text-align: justify;
+}

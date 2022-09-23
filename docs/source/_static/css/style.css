@@ -1,0 +1,38 @@
+/** css/style.css **/
+
+/* This line is theme specific - it includes the base theme CSS */
+@import "theme.css"; /* Default rtd (Read the Docs) theme */
+
+.rst-content body {
+  text-align: justify;
+}
+
+/* Nested lists in the `sphinx-rtd-theme` do not autonumber with
+appropriate alphanumeric headings (i.e. "1", "a", "i", for headings
+1, 2, and 3, respectively. Override the default styling to fix
+this */
+.rst-content ol.arabic > li > ol > li {
+  list-style-type: lower-alpha;
+}
+
+.rst-content ol.arabic > li > ol > li > ol > li {
+  list-style-type: lower-roman;
+}
+
+/* The definition list style appears to have been removed in latest
+version of `sphinx-rtd-theme`. Adding these back in. */
+.rst-content dl:not(.docutils) dt:first-child {
+  margin-top: 0;
+}
+
+.rst-content dl:not(.docutils) dt {
+  display: table;
+  margin: 6px 0;
+  font-size: 90%;
+  line-height: normal;
+  background: #e7f2fa;
+  color: #2980b9;
+  border-top: solid 3px #6ab0de;
+  padding: 6px;
+  position: relative;
+}

@@ -1,0 +1,6 @@
+# Terms related to Qt library
+qmainwindow
+qtbot
+QTBUG
+qtestlib
+QVTK
