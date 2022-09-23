@@ -1,0 +1,8 @@
+# Constants and enums used in vtk
+parenright
+SIZENE
+SIZENWSE
+SIZESW
+SIZESE
+SIZENS
+SIZEWE

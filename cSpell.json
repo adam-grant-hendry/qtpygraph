@@ -1,0 +1,168 @@
+{
+    "allowCompoundWords": true,
+    "dictionaries": [
+        "acronyms",
+        "authors",
+        "colormaps",
+        "companies",
+        "english_contractions_and_possessives",
+        "fonts",
+        "general_ignores",
+        "general_terms",
+        "medical terms",
+        "numpy",
+        "placeholders",
+        "programs",
+        "pytest_fixtures",
+        "python-common",
+        "python-packages",
+        "python",
+        "qt",
+        "scientific-terms-us",
+        "softwareTerms",
+        "thirdparty_libraries",
+        "vtk_constants",
+        "wordsEn"
+    ],
+    "dictionaryDefinitions": [
+        {
+            "addWords": true,
+            "description": "Acronyms used in this project.",
+            "name": "acronyms",
+            "path": "./.cspell/acronyms.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "Names of python packages used in this project.",
+            "name": "python-packages",
+            "path": "./.cspell/python-packages.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "Names of authors contributing to this project.",
+            "name": "authors",
+            "path": "./.cspell/authors.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "List of user names of users contributing to this project.",
+            "name": "usernames",
+            "path": "./.cspell/usernames.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "Names of programs used or mentioned in this project.",
+            "name": "programs",
+            "path": "./.cspell/programs.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "Qt library terms used in this project.",
+            "name": "qt",
+            "path": "./.cspell/qt.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "Names used as placeholders/dummies throughout this package.",
+            "name": "placeholders",
+            "path": "./.cspell/placeholders.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "Names of 3rd party libraries used throughout this package.",
+            "name": "thirdparty_libraries",
+            "path": "./.cspell/thirdparty_libraries.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "General terms used throughout this package.",
+            "name": "general_terms",
+            "path": "./.cspell/general_terms.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "English contractions and possessives.",
+            "name": "english_contractions_and_possessives",
+            "path": "./.cspell/english_contractions_and_possessives.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "VTK constants and enumerations.",
+            "name": "vtk_constants",
+            "path": "./.cspell/vtk_constants.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "Names of pytest fixtures.",
+            "name": "pytest_fixtures",
+            "path": "./.cspell/pytest_fixtures.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "Names of color maps.",
+            "name": "colormaps",
+            "path": "./.cspell/colormaps.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "Numpy names.",
+            "name": "numpy",
+            "path": "./.cspell/numpy.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "Font names.",
+            "name": "fonts",
+            "path": "./.cspell/fonts.txt",
+            "scope": "workspace"
+        },
+        {
+            "addWords": true,
+            "description": "List of prefix/suffix items that can be safely ignored.",
+            "name": "general_ignores",
+            "path": "./.cspell/general_ignores.txt",
+            "scope": "workspace"
+        }
+    ],
+    "flagWords": [
+        "hte"
+    ],
+    "ignorePaths": [
+        "*.dll",
+        "*.html",
+        "*.css",
+        "*.json",
+        "*.git/**",
+        "**/build/**",
+        "**/_build/**",
+        "**/dist/**",
+        ".venv/",
+        "*.bat",
+        "**/*.pyi"
+    ],
+    "ignoreRegExpList": [
+        "Email",
+        "/\\b(don't|didn't|doesn't|isn't|wasn't|wouldn't|won't)\\b/gi"
+    ],
+    "includeRegExpList": [
+        "comments",
+        "docstring",
+        "string"
+    ],
+    "useGitignore": true,
+    "version": "0.2"
+}

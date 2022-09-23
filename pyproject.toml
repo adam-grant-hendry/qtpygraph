@@ -1,0 +1,432 @@
+[tool.poetry]
+name = "qtpygraph"
+version = "0.1.0"
+description = "A pythonic interface to the Qt Graphics View Framework using qtpy"
+authors = ["Hendry, Adam <adam.grant.hendry@gmail.com>"]
+license = "Apache-2.0"
+readme = "README.rst"
+repository = "https://github.com/adam-grant-hendry/qtpygraph"
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10"
+]
+packages = [
+    {include = "docs"},
+    {include = "qtpygraph"},
+    {include = "tests"},
+    {include = "stubs"}
+]
+
+[tool.poetry.dependencies]
+appdirs = ">=1.4.4"
+glfw = ">=2.5.3"
+h5py = ">=3.6.0"
+hypothesis = ">=6.46.2"
+ipython = ">=8.3.0"
+matplotlib = ">=3.5.2"
+merry = ">=0.3.0"
+ninja = ">=1.10.2"
+numpy = ">=1.22.3"
+opencv-python = ">=4.5.5.64"
+pydantic = ">=1.9.1"
+PySide6 = ">=6.3.0"
+python = ">=3.8,<3.11"
+QtPy = ">=2.1.0"
+setuptools = "^65.3.0"
+setuptools-scm = "^7.0.5"
+
+[tool.poetry.group.dev.dependencies]
+add-trailing-comma = ">=2.2.3"
+bandit = { extras = ["toml"], version = ">=1.7.4" }
+beautifulsoup4 = ">=4.11.1"
+black = ">=22.3.0"
+blackdoc = ">=0.3.4"
+blacken-docs = ">=1.12.1"
+check-jsonschema = ">=0.14.3"
+codecov = ">=2.1.12"
+codespell = ">=2.1.0"
+commitizen = ">=2.27.0"
+coverage = { extras = ["toml"], version = ">=6.4" }
+doc8 = ">=0.11.2"
+docformatter = ">=1.4"
+flake8 = ">=4.0.1"
+flake8-bugbear = ">=22.9.11"
+flake8-quotes = ">=3.3.1"
+graphviz = ">=0.20"
+html5lib = ">=1.1"
+IceSpringPySideStubs-PySide6 = ">=1.3.1"
+instaviz = ">=0.6.0"
+ipdb = ">=0.13.9"
+isort = ">=5.10.1"
+lxml = ">=4.8.0"
+memory-profiler = ">=0.60.0"
+mypy = ">=0.961"
+mypy-extensions = ">=0.4.3"
+myst-parser = ">=0.17.2"
+numpydoc = ">=1.4.0"
+objgraph = ">=3.5.0"
+pep8-naming = ">=0.12.1"
+pre-commit = ">=2.18.1"
+pycln = ">=1.3.5"
+pydocstringformatter = ">=0.7.0"
+pydocstyle = { extras = ["toml"], version = ">=6.1.1" }
+pyinstaller = ">=5.1"
+pylint = ">=2.13.8"
+pyright = ">=1.1.253"
+pytest = ">=7.1.2"
+pytest-cov = ">=3.0.0"
+pytest-doctestplus = ">=0.12.0"
+pytest-env = ">=0.6.2"
+pytest-memprof = ">=0.2.0"
+pytest-mock = ">=3.7.0"
+pytest-qt = ">=4.0.2"
+pytest-randomly = ">=3.11.0"
+pytest-xdist = ">=2.5.0"
+pyupgrade = ">=2.34.0"
+requests = ">=2.27.1"
+rstcheck = { extras = ["toml", "sphinx" ], version = ">=5.0.0" }
+seedir = ">=0.3.0"
+Sphinx = ">=4.5.0"
+sphinx-rtd-theme = ">=1.0.0"
+sphinxcontrib-email = ">=0.3.5"
+sphinxcontrib-napoleon = ">=0.7"
+toml = ">=0.10.2"
+tomli = ">=2.0.1"
+tox = ">=3.25.0"
+tqdm = ">=4.64.0"
+tqdm-stubs = ">=0.2.0"
+types-beautifulsoup4 = ">=4.11.1"
+types-setuptools = ">=57.4.17"
+types-toml = ">=0.10.7"
+typing-extensions = ">=4.2.0"
+vulture = ">=2.3"
+wheel = ">=0.37.1"
+PyYAML = ">=6.0"
+
+[tool.bandit]
+skips = [
+    "B101",
+    "B301",
+    "B403",
+]
+
+[tool.black]
+line-length = 90
+skip-string-normalization = true
+target-version = ["py38"]
+include = '.*\.pyi?$'
+exclude = '\.eggs|\.git|\.mypy_cache|\.tox|\.venv|build|dist'
+
+[tool.commitizen]
+name = "cz_customize"
+version = "0.1.0"
+version_files = [
+    "pyproject.toml:version",
+]
+update_changelog_on_bump = true
+annotated_tag = true
+tag_format = "$version"
+
+[tool.commitizen.customize]
+message_template = "{{change_type}}({{scope}}){% if is_breaking_change == true %}!{% endif %}: {{subject}}{% if body %}\n\n{{body}}{% endif %}{% if footer %}\n\n{% if is_breaking_change == true %}BREAKING CHANGE: {% endif %}{{footer}}{% endif %}"
+schema_pattern = '(feat|fix|refactor|bump)(\(\S+\))?!?:(\s.*)'
+bump_pattern = '^(feat|fix)(\(.+\))?(!)?'
+bump_map = { break = "MAJOR", feat = "MINOR", fix = "PATCH" }
+change_type_order = ["BREAKING CHANGE", "feat", "fix"]
+commit_parser = '(?P<change_type>feat|fix|refactor)(?:\((?P<scope>[^()\r\n]*)\)|\()?(?P<breaking>!)?:\s(?P<message>.*)?'
+changelog_pattern = '^(feat|fix|refactor)?(!)?'
+change_type_map = { feat = "Feat", fix = "Fix", refactor = "Refactor" }
+
+[[tool.commitizen.customize.questions]]
+name = "change_type"
+type = "list"
+message = "Select the type of change you are committing"
+choices = [
+    { value = "feat", name = "feat: (Bumps MINOR) Add/remove an item/feature" },
+    { value = "fix", name = "fix: (Bumps PATCH) Fix/modify an existing item/feature" },
+    { value = "refactor", name = "refactor: (Bumps nothing) Reorganizes item(s); not a 'feat' or 'fix'" },
+]
+
+[[tool.commitizen.customize.questions]]
+name = "scope"
+type = "input"
+message = "Scope. Enter the scope of the change, category first (docs/test/ci/build/perf), followed by class or file name if applicable (comma-separated, no spaces):\n"
+
+[[tool.commitizen.customize.questions]]
+name = "subject"
+type = "input"
+message = "Subject. Enter the short summary of the change (imperative tone, lowercase, no period):\n"
+
+[[tool.commitizen.customize.questions]]
+name = "is_breaking_change"
+type = "confirm"
+message = "Is this a BREAKING CHANGE (backwards incompatible)? (Bumps MAJOR; default: N):\n"
+default = false
+
+[[tool.commitizen.customize.questions]]
+name = "body"
+type = "input"
+message = "Body. Enter complete details about the change (use full sentences with proper grammar): (press [enter] to skip):\n"
+
+[[tool.commitizen.customize.questions]]
+name = "footer"
+type = "input"
+message = "Footer. Reference any Issues this change addresses. If a BREAKING CHANGE, enter details. (press [enter] to skip):\n"
+
+[tool.coverage.run]
+branch = true
+# `shiboken6`, which creates the python bindings for `Qt` C++ source, imports from a
+# `zip` file into the top-level directory at runtime. These files are deleted after
+# running, but `coverage` attempts to look at their source after they're gone, causing
+# warnings to appear. Namely, it looks for these modules/files:
+#
+#    project_dir/pysrcript
+#    project_dir/shibokensupport
+#    project_dir/signature_bootstrap.py
+#
+# To avoid this error, `source` is specified to the package subdirectory. However, this
+# can also be avoided by explicitly omitting these folders in the `omit` section.
+#
+# See https://github.com/nedbat/coveragepy/issues/1392
+source = [
+    'qtpygraph/'
+]
+omit = [
+    'qtpygraph/__main__.py',
+    '.vscode/',
+    '.venv/',
+    'tests/',
+    'stubs/'
+]
+disable_warnings = ['no-data-collected']
+
+[tool.coverage.html]
+directory = 'logs/coverage/html'
+
+[tool.coverage.xml]
+output = 'logs/coverage/coverage.xml'
+
+[tool.coverage.report]
+exclude_lines = [
+    'pragma: no cover',
+    'def __repr__',
+    'raise AssertionError',
+    'raise NotImplementedError',
+    'if __name__ == .__main__.:',
+    '@(abc\.)?abstractmethod'
+]
+
+[tool.doc8]
+ignore = [
+    "D004"  # Ignore CRLF (Not working: see https://github.com/PyCQA/doc8/issues/78)
+]
+max-line-length = 90
+
+[tool.isort]
+profile = "black"
+add_imports = [
+    "from __future__ import annotations"  # Automatically add to module on save if not there
+]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 90
+skip_glob = [
+    # Certain packages require a specific sort order
+    # See: https://github.com/pyvista/pyvista/issues/3141
+    ".venv/Lib/site-packages/*",
+]
+
+[tool.mypy]
+python_executable = ".venv/Scripts/python.exe"
+python_version = "3.8"
+disallow_untyped_defs = true
+warn_return_any = true
+warn_unused_configs = true
+# ``warn_unused_ignores`` seems to be giving several false positives.
+# See:
+#   - https://github.com/python/mypy/issues/4412
+#   - https://github.com/python/mypy/issues/5940
+#   - https://github.com/python/mypy/issues/8823
+#   - https://github.com/python/mypy/issues/2960
+warn_unused_ignores = false
+warn_redundant_casts = true
+show_error_codes = true
+no_pretty = true
+show_column_numbers = true
+plugins = [
+    "pydantic.mypy"
+]
+exclude = [
+    'stubs/',
+    '[.]venv/',
+    'build/',
+    'dist/',
+    'ci/',
+]
+fast_module_lookup = true
+
+[[tool.mypy.overrides]]
+module = [
+    "stubs.*",
+]
+ignore_errors = true
+follow_imports = "skip"
+follow_imports_for_stubs = false
+ignore_missing_imports = true
+
+[tool.pycln]
+all = true
+include = '.*\.pyi?$'
+
+[tool.pydocstyle]
+convention = "numpy"
+ignore = [
+    # Magic methods don't need docstrings
+    "D105"
+]
+
+[tool.pylint.format]
+# Ignore ``line-too-long`` errors for hyperlinks, which must remain on one line
+ignore-long-lines = "https?://\\S+?$"
+
+[tool.pylint.main]
+# ``pylint`` cannot lint (perform static analysis on) C extension modules since it has
+# no way to get an AST object out of the extension module. ``extension-pkg-allow-list``
+# is a ``pylint`` mechanism through which you can tell ``pylint`` to import C extension
+# modules and build an AST from that imported module. Be aware that using this flag
+# means ``pylint`` loads extensions into the active Python interpreter and may run
+# arbitrary code, which you may not want and is the reason why ``pylint`` disables it by
+# default.
+# See:
+# - https://pylint.pycqa.org/en/latest/user_guide/messages/error/no-member.html?highlight=%22c%20extension%22#no-member-e1101
+# - https://github.com/PyCQA/pylint/issues/1524#issuecomment-1214435049
+extension-pkg-allow-list = [
+    "PyQt5",
+    "PyQt6",
+    "PySide2",
+    "PySide6",
+]
+fail-under = 10
+ignore = [
+    ".venv",
+]
+load-plugins = [
+    "pylint.extensions.bad_builtin",
+    "pylint.extensions.broad_try_clause",
+    "pylint.extensions.check_elif",
+    "pylint.extensions.consider_ternary_expression",
+    "pylint.extensions.docparams",
+    # I like lines between paragraphs
+    # "pylint.extensions.empty_comment",
+    "pylint.extensions.redefined_loop_name",
+    # Untidy data structures require while
+    # See: https://pylint.pycqa.org/en/latest/user_guide/messages/warning/while-used.html
+    # See: https://stackoverflow.com/questions/920645/when-to-use-while-or-for-in-python
+    # "pylint.extensions.while_used",
+    "pylint.extensions.for_any_all",
+    "pylint.extensions.no_self_use",
+    "pylint.extensions.set_membership",
+]
+
+[tool.pylint."messages control"]
+confidence = []
+disable = [
+    "too-few-public-methods",
+    "too-many-arguments",
+    "too-many-instance-attributes",
+    "useless-import-alias",
+    "fixme"  # TODO's can be useful
+]
+
+[tool.pylint.parameter_documentation]
+default-docstring-type = "numpy"
+
+[tool.pyright]
+defineConstant = [
+  { PYSIDE6 = true },
+  { PYQT5 = false },
+  { PYSIDE2 = false },
+  { PYQT6 = false }
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+# We want different runs each time (don't use seed)
+# --randomly-seed=1234
+addopts = """\
+--last-failed --last-failed-no-failures all \
+-p no:faulthandler \
+--import-mode=importlib \
+--cov \
+--cov-report term-missing \
+--cov-report html \
+--cov-report xml \
+--doctest-rst \
+--doctest-modules"""
+testpaths = [
+    "tests",
+]
+doctest_plus = "enabled"
+env = [
+    # See https://github.com/pytest-dev/pytest-qt/issues/437
+    "D:PYTEST_QT_API=pyside6",  # pytest-qt
+    "D:QT_API=pyside6"  # qtpy
+    # "D:QT_QPA_PLATFORM=offscreen"
+    # "D:COVERAGE_DEBUG=trace",
+    # "D:COVERAGE_DEBUG_FILE=debug_log.txt"
+]
+filterwarnings = [
+    # Occurs when mocking QWidgets
+    'ignore:pyside_type_init:RuntimeWarning'
+]
+
+[tool.rstcheck]
+# `rstcheck` is known to be buggy on Windows
+# See Issue #107: https://github.com/rstcheck/rstcheck/issues/107
+ignore_messages = [
+    "(Duplicate label .*, other instance in .*)"
+]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+minversion = 3.25.0
+envlist = py38, py39, py310
+isolated_build = true
+
+[gh-actions]
+python =
+    3.8: py38
+    3.9: py39
+    3.10: py310
+
+[testenv]
+whitelist_externals = poetry
+commands_pre =
+    poetry install --no-root --sync
+commands =
+    poetry run pytest
+"""
+
+# Currently, poetry only supports pure python builds. This (undocumented) feature
+# tells poetry to build wheels for the Host OS
+[tool.poetry.build]
+generate-setup-file = false
+script = 'build.py'
+
+[build-system]
+requires = [
+    "setuptools>=45",
+    "wheel",
+    "toml",
+]
+build-backend = "setuptools.build_meta"

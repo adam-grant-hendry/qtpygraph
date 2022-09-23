@@ -1,0 +1,16 @@
+# Names of python packages used in this project
+cython
+pyautogui
+pycln
+pydantic
+pygrep-hooks
+pypoetry
+pyright
+pyside
+pytestqt
+pyupgrade
+qtpy
+qtpygraph
+rstcheck
+rtcore
+shiboken

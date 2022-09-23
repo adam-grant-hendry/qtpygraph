@@ -1,0 +1,17 @@
+# Default state for all rules
+default: true
+
+# Disable line length too long
+#  - Ouptut looks bad with broken lines
+#  - VSCode can wrap text
+MD013: false
+
+# Allow inline HTML
+#  - `markdownlint` enforces this rule for those who want their documents to be pure
+#    Markdown, but raw HTML is allowed in Markdown
+#  - HTML sometimes help us acheive things Markdown itself cannot
+MD033: false
+
+# Allow non-headings for first line in file
+#  - Sometimes we want comments or HTML before our first header
+MD041: false
