@@ -129,7 +129,7 @@ jobs:
     defaults:
       run:
         shell: bash
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out the Repository
@@ -149,7 +149,7 @@ jobs:
           curl -sL https://install.python-poetry.org | python - -y
 
       - name: Update `PATH` for `poetry`
-        run: echo "$APPDATA\\Python\\Scripts" >> $GITHUB_PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Print `poetry` Version
         run: poetry --version
@@ -205,8 +205,7 @@ jobs:
       - name: Make Coverage Badge
         uses: schneegans/dynamic-badges-action@v1.4.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GIST_TOKEN }}
         with:
           # `GIST_TOKEN` is simply a personal access token with a scope of "gist".
           auth: ${{ secrets.GIST_TOKEN }}
