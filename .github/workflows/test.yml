@@ -103,7 +103,8 @@ jobs:
 
       - name: Copy Stubs to `.venv/Lib/site-packages``
         run: |
-          ./.ci/copy-stubs-to-site-packages.sh
+          chmod u+x ./.ci/copy-stubs-to-site-packages.sh
+          bash ./.ci/copy-stubs-to-site-packages.sh
 
       - name: Run tests
         run: poetry run tox -p auto
