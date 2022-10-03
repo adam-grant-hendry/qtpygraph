@@ -110,8 +110,8 @@ jobs:
       - name: Copy Stubs to `.venv/Lib/site-packages`` (Windows)
         if: matrix.os == 'Windows'
         run: |
-          cp -R stubs/PySide6-stubs/* .venv/Lib/python*/site-packages/
-          cp -R stubs/pytestqt-stubs/* .venv/Lib/python*/site-packages/
+          cp -R stubs/PySide6-stubs/* .venv/Lib/site-packages/
+          cp -R stubs/pytestqt-stubs/* .venv/Lib/site-packages/
 
       - name: Run tests
         run: poetry run tox -p auto
