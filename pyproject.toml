@@ -414,7 +414,7 @@ isolated_build = true
 python =
     3.8: py38-pyqt5, py38-pyside2, py38-pyqt6, py38-pyside6
     3.9: py39-pyqt5, py39-pyside2, py39-pyqt6, py39-pyside6
-    3.10: py310-pyqt5, py310-pyside2, py310-pyqt6, py39-pyside6
+    3.10: py310-pyqt5, py310-pyside2, py310-pyqt6, py310-pyside6
 
 [testenv]
 allowlist_externals =
