@@ -412,9 +412,9 @@ isolated_build = true
 
 [gh-actions]
 python =
-    3.8: py38-pyqt5, py38-pyside2, py38-pyqt6, py38-pyside6
-    3.9: py39-pyqt5, py39-pyside2, py39-pyqt6, py39-pyside6
-    3.10: py310-pyqt5, py310-pyside2, py310-pyqt6, py310-pyside6
+    3.8: py38-{pyqt5,pyside2,pyqt6,pyside6}
+    3.9: py39-{pyqt5,pyside2,pyqt6,pyside6}
+    3.10: py310-{pyqt5,pyside2,pyqt6,pyside6}
 
 [testenv]
 allowlist_externals =
@@ -433,13 +433,12 @@ setenv =
     # See: https://github.com/tox-dev/tox/issues/1550
     PYTHONIOENCODING=utf-8
     COVERAGE_FILE=tox-.coverage.{envname}
-commands_pre =
+commands =
     poetry install --no-root
     pyqt5: poetry run python -m pip install PyQt5 PyQt5-stubs
     pyside2: poetry run python -m pip install PySide2 PySide2-stubs
     pyqt6: poetry run python -m pip install PyQt6 IceSpringPySideStubs-PyQt6
     pyside6: poetry run python -m pip install PySide6 IceSpringPySideStubs-PySide6
-commands =
     poetry run pytest
 
 # Not run by default. To run, use `tox -e coverage`
@@ -465,9 +464,8 @@ parallel_show_output = true
 allowlist_externals =
     poetry
     sphinx-build
-commands_pre =
-    poetry install --no-root
 commands =
+    poetry install --no-root
     poetry run sphinx-build -W --keep-going -b docs docs/build
 """
 
