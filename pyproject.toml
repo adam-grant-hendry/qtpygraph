@@ -445,7 +445,7 @@ commands =
 [testenv:coverage]
 skip_install = true
 depends =
-    py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6},coverage
+    py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6}
 deps =
     coverage
     tox
