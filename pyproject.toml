@@ -457,9 +457,9 @@ setenv =
     COVERAGE_FILE=tox-.coverage
 commands =
     poetry run coverage combine
-    poetry run coverage report -m --skip-covered
-    poetry run coverage html
-    poetry run coverage json
+    poetry run coverage report -i --skip-covered
+    poetry run coverage html -i
+    poetry run coverage json -i
     sh -c 'mv -f tox-.coverage .coverage'
     sh -c 'rm -f tox-.coverage'
 parallel_show_output = true
