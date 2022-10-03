@@ -451,6 +451,7 @@ basepython = python3.10
 setenv =
     COVERAGE_FILE=tox-.coverage
 commands =
+    find . -name "*.pyc" -delete
     coverage combine
     coverage report -m --skip-covered
     coverage html
