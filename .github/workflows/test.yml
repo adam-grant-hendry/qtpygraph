@@ -149,7 +149,6 @@ jobs:
           curl -sL https://install.python-poetry.org | python - -y
 
       - name: Update `PATH` for `poetry`
-        if: matrix.os == 'Windows'
         run: echo "$APPDATA\\Python\\Scripts" >> $GITHUB_PATH
 
       - name: Print `poetry` Version
