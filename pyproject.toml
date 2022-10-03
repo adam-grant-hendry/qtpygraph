@@ -446,6 +446,7 @@ commands =
 skip_install = true
 deps =
     coverage
+    find
     tox
 basepython = python3.10
 setenv =
@@ -453,7 +454,7 @@ setenv =
 commands =
     find . -name "*.pyc" -delete
     coverage combine
-    coverage report -m --skip-covered
+    coverage report -m
     coverage html
     coverage json
     sh -c 'mv -f tox-.coverage .coverage'
