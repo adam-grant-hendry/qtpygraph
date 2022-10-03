@@ -407,21 +407,13 @@ ignore_messages = [
 legacy_tox_ini = """
 [tox]
 minversion = 3.25.0
-envlist = py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6},coverage
+envlist = py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6}
 isolated_build = true
-
-[gh-actions]
-python =
-    3.8: py38
-    3.9: py39
-    3.10: py310
 
 [testenv]
 allowlist_externals =
     poetry
-    pre-commit
     pytest
-    sh
 setenv =
     pyqt5: PYTEST_QT_API=pyqt5
     pyqt5: QT_API=pyqt5
@@ -442,14 +434,13 @@ commands_pre =
     pyqt6: poetry run python -m pip install PyQt6 IceSpringPySideStubs-PyQt6
     pyside6: poetry run python -m pip install PySide6 IceSpringPySideStubs-PySide6
 commands =
-    pytest
+    poetry run pytest
 
 [testenv:coverage]
-allowlist_externals =
+skip_install = true
+deps =
     coverage
-    sh
-depends =
-    py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6}
+    tox
 basepython = python3.10
 setenv =
     COVERAGE_FILE=tox-.coverage

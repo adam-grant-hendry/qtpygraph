@@ -16,6 +16,7 @@ jobs:
       matrix:
         os: [Windows, macOS, Ubuntu]
         python-version: ["3.8", "3.9", "3.10"]
+        qt-lib: [pyqt5, pyside2, pyqt6, pyside6]
         include:
           - os: Ubuntu
             image: ubuntu-22.04
@@ -28,7 +29,7 @@ jobs:
       run:
         shell: bash
 
-    name: Test - ${{ matrix.os }} / ${{ matrix.python-version }}
+    name: Test - ${{ matrix.os }} / ${{ matrix.python-version }}-${{ matrix.qt-lib }}
     runs-on: ${{ matrix.image }}
 
     steps:
@@ -98,7 +99,6 @@ jobs:
 
       - name: Install GitHub Actions Plugins
         run: |
-          poetry run python -m pip install tox-gh-actions
           poetry run python -m pip install pytest-github-actions-annotate-failures
 
       - name: Copy Stubs to `.venv/lib/python*/site-packages`` (MacOS/Ubuntu)
@@ -114,7 +114,7 @@ jobs:
           cp -R stubs/pytestqt-stubs/* .venv/Lib/site-packages/
 
       - name: Run tests
-        run: poetry run tox -p auto
+        run: poetry run tox -e ${{ matrix.python-version }}-${{ matrix.qt-lib }}
 
       - name: Upload Coverage Artifacts
         uses: actions/upload-artifact@v3
@@ -143,7 +143,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install tox coverage tox-gh-actions
+          python -m pip install tox coverage
           python -m pip install pytest-github-actions-annotate-failures
 
       - name: Download Coverage Artifacts
