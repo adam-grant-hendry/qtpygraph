@@ -102,12 +102,13 @@ jobs:
           poetry run python -m pip install pytest-github-actions-annotate-failures
 
       - name: Copy Stubs to `.venv/lib/python*/site-packages`` (MacOS/Ubuntu)
+        if: matrix.os != 'Windows'
         run: |
           cp -R stubs/PySide6-stubs/* .venv/lib/python*/site-packages/
           cp -R stubs/pytestqt-stubs/* .venv/lib/python*/site-packages/
 
       - name: Copy Stubs to `.venv/Lib/site-packages`` (Windows)
-        if: matrix.os != 'Windows'
+        if: matrix.os == 'Windows'
         run: |
           cp -R stubs/PySide6-stubs/* .venv/Lib/python*/site-packages/
           cp -R stubs/pytestqt-stubs/* .venv/Lib/python*/site-packages/
