@@ -407,8 +407,14 @@ ignore_messages = [
 legacy_tox_ini = """
 [tox]
 minversion = 3.25.0
-envlist = py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6}
+envlist = py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6},coverage
 isolated_build = true
+
+[gh-actions]
+python =
+    3.8: py38-pyqt5, py38-pyside2, py38-pyqt6, py38-pyside6
+    3.9: py39-pyqt5, py39-pyside2, py39-pyqt6, py39-pyside6
+    3.10: py310-pyqt5, py310-pyside2, py310-pyqt6, py39-pyside6
 
 [testenv]
 allowlist_externals =
@@ -438,6 +444,8 @@ commands =
 
 [testenv:coverage]
 skip_install = true
+depends =
+    py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6},coverage
 deps =
     coverage
     tox
