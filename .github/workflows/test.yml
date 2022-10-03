@@ -114,7 +114,7 @@ jobs:
           cp -R stubs/pytestqt-stubs/* .venv/Lib/site-packages/
 
       - name: Run tests
-        run: poetry run tox -p auto
+        run: poetry run tox
 
       - name: Upload Coverage Artifacts
         uses: actions/upload-artifact@v3
