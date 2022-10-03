@@ -442,7 +442,6 @@ commands_pre =
     pyqt6: poetry run python -m pip install PyQt6 IceSpringPySideStubs-PyQt6
     pyside6: poetry run python -m pip install PySide6 IceSpringPySideStubs-PySide6
 commands =
-    sh .ci/copy-stubs-to-site-packages.sh
     pytest
 
 [testenv:coverage]
