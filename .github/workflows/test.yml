@@ -204,10 +204,13 @@ jobs:
 
       - name: Make Coverage Badge
         uses: schneegans/dynamic-badges-action@v1.4.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
         with:
           # `GIST_TOKEN` is simply a personal access token with a scope of "gist".
           auth: ${{ secrets.GIST_TOKEN }}
-          gistID: 201729690da06d457434ac3c9c98db2e
+          gistID: 93a225b73dfa5ee041e6786dfbeff9ad
           filename: coverage_badge.json
           label: Coverage
           message: ${{ env.total }}%
