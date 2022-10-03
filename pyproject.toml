@@ -24,25 +24,8 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-appdirs = ">=1.4.4"
-glfw = ">=2.5.3"
-h5py = ">=3.6.0"
-hypothesis = ">=6.46.2"
-ipython = ">=8.3.0"
-matplotlib = ">=3.5.2"
-merry = ">=0.3.0"
-ninja = ">=1.10.2"
-numpy = ">=1.22.3"
-opencv-python = ">=4.5.5.64"
-pydantic = ">=1.9.1"
-PySide6 = ">=6.3.0"
-python = ">=3.8,<3.11"
-QtPy = ">=2.1.0"
-setuptools = "^65.3.0"
-setuptools-scm = "^7.0.5"
-
-[tool.poetry.group.dev.dependencies]
 add-trailing-comma = ">=2.2.3"
+appdirs = ">=1.4.4"
 bandit = { extras = ["toml"], version = ">=1.7.4" }
 beautifulsoup4 = ">=4.11.1"
 black = ">=22.3.0"
@@ -58,22 +41,31 @@ docformatter = ">=1.4"
 flake8 = ">=4.0.1"
 flake8-bugbear = ">=22.9.11"
 flake8-quotes = ">=3.3.1"
+glfw = ">=2.5.3"
 graphviz = ">=0.20"
+h5py = ">=3.6.0"
 html5lib = ">=1.1"
-IceSpringPySideStubs-PySide6 = ">=1.3.1"
+hypothesis = ">=6.46.2"
 instaviz = ">=0.6.0"
 ipdb = ">=0.13.9"
+ipython = ">=8.3.0"
 isort = ">=5.10.1"
 lxml = ">=4.8.0"
+matplotlib = ">=3.5.2"
 memory-profiler = ">=0.60.0"
+merry = ">=0.3.0"
 mypy = ">=0.961"
 mypy-extensions = ">=0.4.3"
 myst-parser = ">=0.17.2"
+ninja = ">=1.10.2"
+numpy = ">=1.22.3"
 numpydoc = ">=1.4.0"
 objgraph = ">=3.5.0"
+opencv-python = ">=4.5.5.64"
 pep8-naming = ">=0.12.1"
 pre-commit = ">=2.18.1"
 pycln = ">=1.3.5"
+pydantic = ">=1.9.1"
 pydocstringformatter = ">=0.7.0"
 pydocstyle = { extras = ["toml"], version = ">=6.1.1" }
 pyinstaller = ">=5.1"
@@ -88,10 +80,15 @@ pytest-mock = ">=3.7.0"
 pytest-qt = ">=4.0.2"
 pytest-randomly = ">=3.11.0"
 pytest-xdist = ">=2.5.0"
+python = ">=3.8,<3.11"
 pyupgrade = ">=2.34.0"
+PyYAML = ">=6.0"
+QtPy = ">=2.1.0"
 requests = ">=2.27.1"
 rstcheck = { extras = ["toml", "sphinx" ], version = ">=5.0.0" }
 seedir = ">=0.3.0"
+setuptools = "^65.3.0"
+setuptools-scm = "^7.0.5"
 Sphinx = ">=4.5.0"
 sphinx-rtd-theme = ">=1.0.0"
 sphinxcontrib-email = ">=0.3.5"
@@ -107,7 +104,6 @@ types-toml = ">=0.10.7"
 typing-extensions = ">=4.2.0"
 vulture = ">=2.3"
 wheel = ">=0.37.1"
-PyYAML = ">=6.0"
 
 [tool.bandit]
 skips = [
@@ -181,6 +177,9 @@ message = "Footer. Reference any Issues this change addresses. If a BREAKING CHA
 
 [tool.coverage.run]
 branch = true
+# Append machine name, process id, and random number to data file name so coverage can be
+# run in parallel environments, e.g. in tox.
+parallel = true
 # `shiboken6`, which creates the python bindings for `Qt` C++ source, imports from a
 # `zip` file into the top-level directory at runtime. These files are deleted after
 # running, but `coverage` attempts to look at their source after they're gone, causing
@@ -209,6 +208,9 @@ disable_warnings = ['no-data-collected']
 [tool.coverage.html]
 directory = 'logs/coverage/html'
 
+[tool.coverage.json]
+output = 'logs/coverage/coverage.json'
+
 [tool.coverage.xml]
 output = 'logs/coverage/coverage.xml'
 
@@ -220,6 +222,13 @@ exclude_lines = [
     'raise NotImplementedError',
     'if __name__ == .__main__.:',
     '@(abc\.)?abstractmethod'
+]
+
+[tool.coverage.paths]
+source = [
+    "qtpygraph/",
+    ".tox/py*/Lib/site-packages/",
+    ".tox/linting/Lib/site-packages/"
 ]
 
 [tool.doc8]
@@ -368,8 +377,6 @@ addopts = """\
 --import-mode=importlib \
 --cov \
 --cov-report term-missing \
---cov-report html \
---cov-report xml \
 --doctest-rst \
 --doctest-modules"""
 testpaths = [
@@ -400,7 +407,7 @@ ignore_messages = [
 legacy_tox_ini = """
 [tox]
 minversion = 3.25.0
-envlist = py38, py39, py310
+envlist = py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6},coverage
 isolated_build = true
 
 [gh-actions]
@@ -410,23 +417,69 @@ python =
     3.10: py310
 
 [testenv]
-whitelist_externals = poetry
+allowlist_externals =
+    poetry
+    pre-commit
+    pytest
+    sh
+setenv =
+    pyqt5: PYTEST_QT_API=pyqt5
+    pyqt5: QT_API=pyqt5
+    pyside2: PYTEST_QT_API=pyside2
+    pyside2: QT_API=pyside2
+    pyqt6: PYTEST_QT_API=pyqt6
+    pyqt6: QT_API=pyqt6
+    pyside6: PYTEST_QT_API=pyside6
+    pyside6: QT_API=pyside6
+    QT_QPA_PLATFORM=offscreen
+    # See: https://github.com/tox-dev/tox/issues/1550
+    PYTHONIOENCODING=utf-8
+    COVERAGE_FILE=tox-.coverage.{envname}
 commands_pre =
-    poetry install --no-root --sync
+    poetry install --no-root
+    pyqt5: poetry run python -m pip install PyQt5 PyQt5-stubs
+    pyside2: poetry run python -m pip install PySide2 PySide2-stubs
+    pyqt6: poetry run python -m pip install PyQt6 IceSpringPySideStubs-PyQt6
+    pyside6: poetry run python -m pip install PySide6 IceSpringPySideStubs-PySide6
 commands =
-    poetry run pytest
+    sh .ci/copy-stubs-to-site-packages.sh
+    pytest
+
+[testenv:coverage]
+allowlist_externals =
+    coverage
+    sh
+skip_install = true
+depends =
+    py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6}
+basepython = python3.10
+setenv =
+    COVERAGE_FILE=tox-.coverage
+commands =
+    coverage combine
+    coverage report -m --skip-covered
+    coverage html
+    coverage json
+    sh -c 'mv -f tox-.coverage .coverage'
+    sh -c 'rm -f tox-.coverage'
+parallel_show_output = true
+
+# Not run by default. To run, use `tox -e docs`
+[testenv:docs]
+allowlist_externals =
+    poetry
+    sphinx-build
+commands_pre =
+    poetry install --no-root
+commands =
+    poetry run sphinx-build -W --keep-going -b docs docs/build
 """
 
 # Currently, poetry only supports pure python builds. This (undocumented) feature
 # tells poetry to build wheels for the Host OS
 [tool.poetry.build]
 generate-setup-file = false
-script = 'build.py'
 
 [build-system]
-requires = [
-    "setuptools>=45",
-    "wheel",
-    "toml",
-]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.2.0"]
+build-backend = "poetry.core.masonry.api"

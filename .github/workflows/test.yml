@@ -1,10 +1,14 @@
-name: Run Tests
+name: Test
 
 on:
   pull_request:
     branches: [main]
   push:
     branches: [main]
+
+concurrency:
+  group: test-${{ github.head_ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -24,7 +28,7 @@ jobs:
       run:
         shell: bash
 
-    name: ${{ matrix.os }} / ${{ matrix.python-version }}
+    name: Test - ${{ matrix.os }} / ${{ matrix.python-version }}
     runs-on: ${{ matrix.image }}
 
     steps:
@@ -97,5 +101,105 @@ jobs:
           poetry run python -m pip install tox-gh-actions
           poetry run python -m pip install pytest-github-actions-annotate-failures
 
+      - name: Copy Stubs to `.venv/Lib/site-packages``
+        run: |
+          ./.ci/copy-stubs-to-site-packages.sh
+
       - name: Run tests
-        run: poetry run tox -e py
+        run: poetry run tox -p auto
+
+      - name: Upload Coverage Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage_data
+          path: tox-.coverage.*
+
+  coverage:
+    name: coverage
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the Repository
+        uses: actions/checkout@v3
+
+      - name: Install `python` ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Print `python` Version
+        id: full-python-version
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+
+      - name: Install `poetry`
+        run: |
+          curl -sL https://install.python-poetry.org | python - -y
+
+      - name: Update `PATH` for `poetry`
+        if: matrix.os != 'Windows'
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Print `poetry` Version
+        run: poetry --version
+
+      - name: Configure `poetry` Settings
+        run: poetry config virtualenvs.in-project true
+
+      - name: Setup `python` Cache
+        uses: actions/cache@v3
+        id: python-cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Verify `python` Cache is Healthy
+        if: steps.python-cache.outputs.cache-hit == 'true'
+        run: |
+          # `timeout` is not available on macOS, so we define a custom function.
+          [ "$(command -v timeout)" ] || function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
+
+          # Using `timeout` is a safeguard against the Poetry command hanging for some reason.
+          timeout 10s poetry run pip --version || rm -rf .venv
+
+      - name: Setup `tox` Cache
+        uses: actions/cache@v3
+        id: tox-cache
+        with:
+          path: .tox
+          key: tox-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install Dependencies
+        run: |
+          poetry run pip install --upgrade pip
+          poetry install
+
+      - name: Install GitHub Actions Plugins
+        run: |
+          poetry run python -m pip install tox-gh-actions
+          poetry run python -m pip install pytest-github-actions-annotate-failures
+
+      - name: Download Coverage Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage_data
+
+      - name: Combine Coverage Results
+        run: |
+          poetry run tox -e coverage
+          export TOTAL=$(python -c "import json;print(json.load(open('logs/coverage/coverage.json'))['totals']['percent_covered_display'])")
+          echo "total_coverage=$TOTAL" >> $GITHUB_ENV
+          echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
+
+      - name: Make Coverage Badge
+        uses: schneegans/dynamic-badges-action@v1.4.0
+        with:
+          # `GIST_TOKEN` is simply a personal access token with a scope of "gist".
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: 201729690da06d457434ac3c9c98db2e
+          filename: coverage_badge.json
+          label: Coverage
+          message: ${{ env.total }}%
+          minColorRange: 50
+          maxColorRange: 90
+          valColorRAnge: ${{ env.total }}

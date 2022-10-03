@@ -29,7 +29,7 @@
         90
     ],
     "editor.tabCompletion": "on",
-    "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/build",
+    "esbonio.sphinx.buildDir": "${workspaceFolder}\\docs\\build",
     "esbonio.sphinx.confDir": "${workspaceFolder}\\docs\\source",
     "esbonio.sphinx.forceFullBuild": false,
     "explorer.compactFolders": false,
