@@ -446,6 +446,7 @@ commands =
 
 [testenv:coverage]
 allowlist_externals =
+    poetry
     coverage
     sh
 skip_install = true
@@ -455,10 +456,10 @@ basepython = python3.10
 setenv =
     COVERAGE_FILE=tox-.coverage
 commands =
-    coverage combine
-    coverage report -m --skip-covered
-    coverage html
-    coverage json
+    poetry run coverage combine
+    poetry run coverage report -m --skip-covered
+    poetry run coverage html
+    poetry run coverage json
     sh -c 'mv -f tox-.coverage .coverage'
     sh -c 'rm -f tox-.coverage'
 parallel_show_output = true

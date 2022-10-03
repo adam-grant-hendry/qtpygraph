@@ -123,9 +123,13 @@ jobs:
           path: tox-.coverage.*
 
   coverage:
-    name: coverage
+    name: Coverage
     needs: test
-    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+    runs-on: windows-latest
 
     steps:
       - name: Check out the Repository
@@ -145,8 +149,8 @@ jobs:
           curl -sL https://install.python-poetry.org | python - -y
 
       - name: Update `PATH` for `poetry`
-        if: matrix.os != 'Windows'
-        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+        if: matrix.os == 'Windows'
+        run: echo "$APPDATA\\Python\\Scripts" >> $GITHUB_PATH
 
       - name: Print `poetry` Version
         run: poetry --version
