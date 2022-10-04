@@ -455,7 +455,7 @@ setenv =
 commands =
     coverage debug data
     coverage combine --debug=pathmap
-    coverage report -m --skip-covered
+    coverage report -m --skip-covered --debug=pathmap
     coverage html
     coverage json
     sh -c 'mv -f tox-.coverage .coverage'
