@@ -445,6 +445,7 @@ commands =
 [testenv:coverage]
 allowlist_externals =
     find
+    ls
 deps =
     coverage
     tox
@@ -456,6 +457,7 @@ setenv =
 commands =
     find . -name "*.pyc" -delete
     coverage combine
+    ls -al
     coverage report -m --skip-covered --debug=trace
     coverage html
     coverage json
