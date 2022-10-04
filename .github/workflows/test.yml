@@ -1,10 +1,14 @@
-name: Run Tests
+name: Test
 
 on:
   pull_request:
     branches: [main]
   push:
     branches: [main]
+
+concurrency:
+  group: test-${{ github.head_ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -24,7 +28,7 @@ jobs:
       run:
         shell: bash
 
-    name: ${{ matrix.os }} / ${{ matrix.python-version }}
+    name: Test - ${{ matrix.os }} / ${{ matrix.python-version }}
     runs-on: ${{ matrix.image }}
 
     steps:
@@ -90,12 +94,75 @@ jobs:
       - name: Install Dependencies
         run: |
           poetry run pip install --upgrade pip
-          poetry install
-
-      - name: Install GitHub Actions Plugins
-        run: |
           poetry run python -m pip install tox-gh-actions
           poetry run python -m pip install pytest-github-actions-annotate-failures
 
+      - name: Copy Stubs to `.venv/lib/python*/site-packages`` (MacOS/Ubuntu)
+        if: matrix.os != 'Windows'
+        run: |
+          cp -R stubs/PySide6-stubs/* .venv/lib/python*/site-packages/
+          cp -R stubs/pytestqt-stubs/* .venv/lib/python*/site-packages/
+
+      - name: Copy Stubs to `.venv/Lib/site-packages`` (Windows)
+        if: matrix.os == 'Windows'
+        run: |
+          cp -R stubs/PySide6-stubs/* .venv/Lib/site-packages/
+          cp -R stubs/pytestqt-stubs/* .venv/Lib/site-packages/
+
       - name: Run tests
-        run: poetry run tox -e py
+        run: poetry run tox
+
+      - name: Upload Coverage Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage_data
+          path: tox-.coverage.*
+
+  coverage:
+    name: Coverage
+    needs: test
+
+    defaults:
+      run:
+        shell: bash
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the Repository
+        uses: actions/checkout@v3
+
+      - name: Install `python` ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install tox coverage
+          python -m pip install pytest-github-actions-annotate-failures
+
+      - name: Download Coverage Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage_data
+
+      - name: Combine Coverage Results
+        run: |
+          python -m tox -e coverage
+          export TOTAL=$(python -c "import json;print(json.load(open('logs/coverage/coverage.json'))['totals']['percent_covered_display'])")
+          echo "total_coverage=$TOTAL" >> $GITHUB_ENV
+          echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
+
+      - name: Make Coverage Badge
+        uses: schneegans/dynamic-badges-action@v1.4.0
+        with:
+          # `GIST_TOKEN` is simply a personal access token with a scope of "gist".
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 93a225b73dfa5ee041e6786dfbeff9ad
+          filename: coverage_badge.json
+          label: Coverage
+          message: ${{ env.total_coverage }}%
+          minColorRange: 50
+          maxColorRange: 90
+          valColorRAnge: ${{ env.total_coverage }}
