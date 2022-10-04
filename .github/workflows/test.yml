@@ -109,6 +109,9 @@ jobs:
           cp -R stubs/PySide6-stubs/* .venv/Lib/site-packages/
           cp -R stubs/pytestqt-stubs/* .venv/Lib/site-packages/
 
+      - name: Setup Headless Display
+        uses: pyvista/setup-headless-display-action@v1
+
       - name: Run tests
         run: poetry run tox
 
