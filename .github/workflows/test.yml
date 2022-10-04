@@ -158,7 +158,7 @@ jobs:
         uses: schneegans/dynamic-badges-action@v1.4.0
         with:
           # `GIST_TOKEN` is simply a personal access token with a scope of "gist".
-          auth: ${{ secrets.GIST_TOKEN }}
+          auth: ${{ secrets.GIST_SECRET }}
           gistID: 93a225b73dfa5ee041e6786dfbeff9ad
           filename: coverage_badge.json
           label: Coverage
