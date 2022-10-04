@@ -162,7 +162,7 @@ jobs:
           gistID: 93a225b73dfa5ee041e6786dfbeff9ad
           filename: coverage_badge.json
           label: Coverage
-          message: ${{ env.total }}%
+          message: ${{ env.total_coverage }}%
           minColorRange: 50
           maxColorRange: 90
-          valColorRAnge: ${{ env.total }}
+          valColorRAnge: ${{ env.total_coverage }}
