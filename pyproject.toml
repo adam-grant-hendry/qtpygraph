@@ -226,7 +226,11 @@ exclude_lines = [
 
 [tool.coverage.paths]
 source = [
-    ".",
+    "qtpygraph/",
+    "*/site-packages"
+]
+others = [
+    "qtpygraph/",
     "*/qtpygraph",
 ]
 
@@ -406,7 +410,7 @@ ignore_messages = [
 legacy_tox_ini = """
 [tox]
 minversion = 3.25.0
-envlist = py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6}
+envlist = py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6},coverage
 isolated_build = true
 
 [gh-actions]
@@ -442,6 +446,7 @@ commands =
 
 # Not run by default. To run, use `tox -e coverage`
 [testenv:coverage]
+depends = py{38,39,310}-{pyqt5,pyside2,pyqt6,pyside6}
 allowlist_externals =
     sh
 deps =
@@ -455,7 +460,7 @@ setenv =
 commands =
     coverage debug data
     coverage combine --debug=pathmap
-    coverage report -m --skip-covered --debug=pathmap
+    coverage report -m --skip-covered
     coverage html
     coverage json
     sh -c 'mv -f tox-.coverage .coverage'
