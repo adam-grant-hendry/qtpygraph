@@ -452,10 +452,11 @@ basepython = python3.10
 setenv =
     COVERAGE_FILE=tox-.coverage
     COVERAGE_DEBUG=trace
+    COVERAGE_DEBUG_FILE=stdout
 commands =
     find . -name "*.pyc" -delete
     coverage combine
-    coverage report -m --skip-covered
+    coverage report -m --skip-covered --debug=trace
     coverage html
     coverage json
     sh -c 'mv -f tox-.coverage .coverage'
