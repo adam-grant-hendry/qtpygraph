@@ -226,9 +226,11 @@ exclude_lines = [
 
 [tool.coverage.paths]
 source = [
-    "qtpygraph/",
-    ".tox/py*/Lib/site-packages/",
-    ".tox/coverage/Lib/site-packages/"
+    "*/site-packages",
+]
+others = [
+    ".",
+    "*/qtpygraph"
 ]
 
 [tool.doc8]
