@@ -455,7 +455,7 @@ setenv =
     COVERAGE_DEBUG_FILE=stdout
 commands =
     coverage debug data
-    coverage combine --debug-pathmap
+    coverage combine --debug=pathmap
     coverage report -m --skip-covered
     coverage html
     coverage json
