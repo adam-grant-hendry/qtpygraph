@@ -443,10 +443,10 @@ commands =
 
 # Not run by default. To run, use `tox -e coverage`
 [testenv:coverage]
-skip_install = true
+allowlist_externals =
+    find
 deps =
     coverage
-    find
     tox
 basepython = python3.10
 setenv =
