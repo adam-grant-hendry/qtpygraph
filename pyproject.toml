@@ -228,7 +228,7 @@ exclude_lines = [
 source = [
     "qtpygraph/",
     ".tox/py*/Lib/site-packages/",
-    ".tox/linting/Lib/site-packages/"
+    ".tox/coverage/Lib/site-packages/"
 ]
 
 [tool.doc8]
