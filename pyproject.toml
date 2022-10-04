@@ -444,8 +444,7 @@ commands =
 # Not run by default. To run, use `tox -e coverage`
 [testenv:coverage]
 allowlist_externals =
-    find
-    ls
+    sh
 deps =
     coverage
     tox
@@ -455,10 +454,9 @@ setenv =
     COVERAGE_DEBUG=trace
     COVERAGE_DEBUG_FILE=stdout
 commands =
-    find . -name "*.pyc" -delete
-    coverage combine
-    ls -al
-    coverage report -m --skip-covered --debug=trace
+    coverage debug data
+    coverage combine --debug-pathmap
+    coverage report -m --skip-covered
     coverage html
     coverage json
     sh -c 'mv -f tox-.coverage .coverage'
