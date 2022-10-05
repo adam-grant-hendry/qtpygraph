@@ -123,8 +123,6 @@ repos:
     hooks:
       - id: commitizen
         stages: [commit-msg]
-      - id: commitizen-branch
-        stages: [push]
 
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.0.0
