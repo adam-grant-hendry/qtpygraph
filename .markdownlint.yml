@@ -6,6 +6,10 @@ default: true
 #  - VSCode can wrap text
 MD013: false
 
+# Allow multiple headings with the same name
+#  - This is necessary for `CHANGELOG.md`
+MD024: false
+
 # Allow inline HTML
 #  - `markdownlint` enforces this rule for those who want their documents to be pure
 #    Markdown, but raw HTML is allowed in Markdown

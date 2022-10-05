@@ -365,6 +365,18 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "cz-emoji"
+version = "0.4.0"
+description = "A `commitizen` plugin like `commitizen-emoji`, but more consistent with the [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/) spec and addition of custom emojis in messages."
+category = "main"
+optional = false
+python-versions = ">=3.8,<4.0"
+
+[package.dependencies]
+commitizen = ">=2.27.0,<3.0.0"
+emoji = ">=1.7.0,<2.0.0"
+
+[[package]]
 name = "decli"
 version = "0.5.2"
 description = "Minimal, easy-to-use, declarative cli tool"
@@ -438,11 +450,11 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "emoji"
-version = "2.1.0"
+version = "1.7.0"
 description = "Emoji for Python"
 category = "main"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = "*"
 
 [package.extras]
 dev = ["coverage", "coveralls", "pytest"]
@@ -2393,7 +2405,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.11"
-content-hash = "2fc6c393433cd25dcf7040b241e4b4ee267d340e15d7d4c9d83938aef252330b"
+content-hash = "d735513cb46b488cb1184d2d1b7c2e66e2e85d01cd140d699366966a45454620"
 
 [metadata.files]
 add-trailing-comma = [
@@ -2653,6 +2665,10 @@ cycler = [
     {file = "cycler-0.11.0-py3-none-any.whl", hash = "sha256:3a27e95f763a428a739d2add979fa7494c912a32c17c4c38c4d5f082cad165a3"},
     {file = "cycler-0.11.0.tar.gz", hash = "sha256:9c87405839a19696e837b3b818fed3f5f69f16f1eec1a1ad77e043dcea9c772f"},
 ]
+cz-emoji = [
+    {file = "cz-emoji-0.4.0.tar.gz", hash = "sha256:ee0de1e882a13b9fd14b07932f09797509cb5b51c202e0e83eb0d492d04b8789"},
+    {file = "cz_emoji-0.4.0-py3-none-any.whl", hash = "sha256:6a48b0152a46b780fbe999341340c89cb06a73dc8182b7f480cb859c07eecfad"},
+]
 decli = [
     {file = "decli-0.5.2-py3-none-any.whl", hash = "sha256:d3207bc02d0169bf6ed74ccca09ce62edca0eb25b0ebf8bf4ae3fb8333e15ca0"},
     {file = "decli-0.5.2.tar.gz", hash = "sha256:f2cde55034a75c819c630c7655a844c612f2598c42c21299160465df6ad463ad"},
@@ -2682,7 +2698,7 @@ docutils = [
     {file = "docutils-0.17.1.tar.gz", hash = "sha256:686577d2e4c32380bb50cbb22f575ed742d58168cee37e99117a854bcd88f125"},
 ]
 emoji = [
-    {file = "emoji-2.1.0.tar.gz", hash = "sha256:56a8c5e906c11694eb7694b78e5452d745030869b3945f6306a8151ff5cdbc39"},
+    {file = "emoji-1.7.0.tar.gz", hash = "sha256:65c54533ea3c78f30d0729288998715f418d7467de89ec258a31c0ce8660a1d1"},
 ]
 exceptiongroup = [
     {file = "exceptiongroup-1.0.0rc9-py3-none-any.whl", hash = "sha256:2e3c3fc1538a094aab74fad52d6c33fc94de3dfee3ee01f187c0e0c72aec5337"},

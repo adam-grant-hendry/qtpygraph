@@ -119,23 +119,22 @@
 fail_fast: true
 repos:
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v2.27.0
+    rev: v2.35.0
     hooks:
       - id: commitizen
         stages: [commit-msg]
-        entry: cz check --commit-msg-file
+      - id: commitizen-branch
+        stages: [push]
 
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.37.3
+    rev: v3.0.0
     hooks:
       - id: pyupgrade
         name: (pyupgrade) Format source to latest python syntax
         language: python
         files: .*\.pyi?$
         entry: pyupgrade
-        args: [
-            "--py38-plus",
-        ]
+        args: ["--py38-plus"]
         minimum_pre_commit_version: 0.15.0
 
   - repo: https://github.com/hadialqattan/pycln
@@ -146,22 +145,17 @@ repos:
         language: python
         files: .*\.pyi?$
         entry: pycln
-        args: [
-          "--config=pyproject.toml"
-        ]
-
+        args: ["--config=pyproject.toml"]
 
   - repo: https://github.com/psf/black
-    rev: 22.6.0
+    rev: 22.8.0
     hooks:
       - id: black
         name: (black) Format source code
         language: python
         files: .*\.pyi?$
         entry: black
-        args: [
-          "--config=pyproject.toml"
-        ]
+        args: ["--config=pyproject.toml"]
         minimum_pre_commit_version: 2.9.2
 
   - repo: local
@@ -172,9 +166,7 @@ repos:
         files: .*\.pyi?$
         entry: isort
         types_or: [cython, pyi, python]
-        args: [
-          '--filter-files',
-        ]
+        args: ["--filter-files"]
         require_serial: true
         minimum_pre_commit_version: 2.9.2
 
@@ -183,9 +175,7 @@ repos:
     hooks:
       - id: trailing-whitespace
         name: (pre-commit-hooks) Fix trailing whitespace (ignores Markdown)
-        args: [
-          --markdown-linebreak-ext=md
-        ]
+        args: [--markdown-linebreak-ext=md]
       - id: double-quote-string-fixer
         name: (pre-commit-hooks) Replace double quotes with single
       - id: end-of-file-fixer
@@ -195,8 +185,8 @@ repos:
       - id: name-tests-test
         name: (pre-commit-hooks) Check tests named correctly ('test_*.py')
         args: [
-          "--django",  # `test_*.py` style
-        ]
+            "--django", # `test_*.py` style
+          ]
       - id: check-merge-conflict
         name: (pre-commit-hooks) Check no files contain merge conflict strings
       - id: check-toml
@@ -205,7 +195,7 @@ repos:
         name: (pre-commit-hooks) Check YAML files parseable
 
   - repo: https://github.com/asottile/add-trailing-comma
-    rev: v2.2.3
+    rev: v2.3.0
     hooks:
       - id: add-trailing-comma
         name: (add-trailing-comma) Add trailing commas to calls and literals
@@ -216,16 +206,13 @@ repos:
       - id: blacken-docs
         name: (blacken-docs) Run `black` on python code blocks in docs
 
-
   # `markdownlint` is only available through npm (Node.js), not pip (PyPI).
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.31.1
+    rev: v0.32.2
     hooks:
       - id: markdownlint
         name: (markdownlint) Check Markdown syntax
-        args: [
-          "--config=.markdownlint.yml",
-        ]
+        args: ["--config=.markdownlint.yml"]
 
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.9.0
@@ -257,7 +244,7 @@ repos:
 
   # cspell is only available through npm (Node.js), not pip (PyPI).
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v6.0.0
+    rev: v6.12.0
     hooks:
       - id: cspell
         name: (cspell) Check spelling
@@ -269,9 +256,7 @@ repos:
         language: system
         types: [python]
         entry: bandit
-        args: [
-          "--configfile=pyproject.toml",
-        ]
+        args: ["--configfile=pyproject.toml"]
         require_serial: true
 
   - repo: https://gitlab.com/bmares/check-json5
@@ -289,9 +274,9 @@ repos:
         types: [python]
         require_serial: true
         args: [
-          "-rn", # Only display messages
-          "-sn", # Don't display the score
-        ]
+            "-rn", # Only display messages
+            "-sn", # Don't display the score
+          ]
 
       - id: mypy
         name: (mypy) Check static type hinting
