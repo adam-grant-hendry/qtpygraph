@@ -117,7 +117,7 @@ jobs:
       - name: Run tests
         env:
           QT_QPA_PLATFORM: "offscreen"
-        run: poetry run tox
+        run: poetry run tox -p auto
 
       - name: Upload Coverage Artifacts
         uses: actions/upload-artifact@v3
