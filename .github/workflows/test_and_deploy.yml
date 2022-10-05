@@ -1,14 +1,14 @@
-name: Test
+name: Test and Deploy
 
-on:
-  pull_request:
-    branches: [main]
-  push:
-    branches: [main]
+on: [push, pull_request]
 
 concurrency:
-  group: test-${{ github.head_ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  ALLOW_PLOTTING: true
+  SHELLOPTS: "errexit:pipefail"
 
 jobs:
   test:
@@ -24,6 +24,7 @@ jobs:
           - os: MacOS
             image: macos-12
       fail-fast: false
+
     defaults:
       run:
         shell: bash
@@ -92,7 +93,9 @@ jobs:
           key: tox-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
+          poetry install --no-root
           poetry run pip install --upgrade pip
           poetry run python -m pip install tox-gh-actions
           poetry run python -m pip install pytest-github-actions-annotate-failures
@@ -113,6 +116,8 @@ jobs:
         uses: pyvista/setup-headless-display-action@v1
 
       - name: Run tests
+        env:
+          QT_QPA_PLATFORM: "offscreen"
         run: poetry run tox
 
       - name: Upload Coverage Artifacts
@@ -169,3 +174,113 @@ jobs:
           minColorRange: 50
           maxColorRange: 90
           valColorRAnge: ${{ env.total_coverage }}
+
+  release:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+
+    needs: [test, coverage]
+
+    strategy:
+      matrix:
+        os: [Windows, macOS, Ubuntu]
+        python-version: ["3.8", "3.9", "3.10"]
+        include:
+          - os: Ubuntu
+            image: ubuntu-22.04
+          - os: Windows
+            image: windows-2022
+          - os: MacOS
+            image: macos-12
+      fail-fast: false
+
+    defaults:
+      run:
+        shell: bash
+
+    name: Release - ${{ matrix.os }} / ${{ matrix.python-version }}
+    runs-on: ${{ matrix.image }}
+
+    steps:
+      - name: Check out the Repository
+        uses: actions/checkout@v3
+
+      - name: Update Ubuntu
+        if: matrix.os == 'Ubuntu'
+        run: |
+          sudo apt update -y
+          sudo apt install -y libgles2-mesa-dev
+
+      - name: Install `python` ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Print `python` Version
+        id: full-python-version
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+
+      - name: Install `poetry`
+        run: |
+          curl -sL https://install.python-poetry.org | python - -y
+
+      - name: Update `PATH` for `poetry` (MacOS/Ubuntu)
+        if: matrix.os != 'Windows'
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Update `PATH` for `poetry` (Windows)
+        if: matrix.os == 'Windows'
+        run: echo "$APPDATA\\Python\\Scripts" >> $GITHUB_PATH
+
+      - name: Print `poetry` Version
+        run: poetry --version
+
+      - name: Configure `poetry` Settings
+        run: poetry config virtualenvs.in-project true
+
+      - name: Setup `python` Cache
+        uses: actions/cache@v3
+        id: python-cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Verify `python` Cache is Healthy
+        if: steps.python-cache.outputs.cache-hit == 'true'
+        run: |
+          # `timeout` is not available on macOS, so we define a custom function.
+          [ "$(command -v timeout)" ] || function timeout() { perl -e 'alarm shift; exec @ARGV' "$@"; }
+
+          # Using `timeout` is a safeguard against the Poetry command hanging for some reason.
+          timeout 10s poetry run pip --version || rm -rf .venv
+
+      - name: Copy Stubs to `.venv/lib/python*/site-packages`` (MacOS/Ubuntu)
+        if: matrix.os != 'Windows'
+        run: |
+          cp -R stubs/PySide6-stubs/* .venv/lib/python*/site-packages/
+          cp -R stubs/pytestqt-stubs/* .venv/lib/python*/site-packages/
+
+      - name: Copy Stubs to `.venv/Lib/site-packages`` (Windows)
+        if: matrix.os == 'Windows'
+        run: |
+          cp -R stubs/PySide6-stubs/* .venv/Lib/site-packages/
+          cp -R stubs/pytestqt-stubs/* .venv/Lib/site-packages/
+
+      - name: Build Project
+        run: poetry build
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifacts: "dist/*"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+
+      - name: Upload To PyPI (Windows)
+        env:
+          PYPI_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
+          PYPI_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
+        run: |
+          poetry config repositories.test-pypi https://test.pypi.org/legacy/
+          poetry config pypi-token.test-pypi $PYPI_PASSWORD
+          poetry publish --skip-existing --username $TEST_PYPI_USERNAME --password $TEST_PYPI_PASSWORD
