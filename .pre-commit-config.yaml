@@ -284,9 +284,19 @@ repos:
         require_serial: true
 
       - id: pytest
-        name: (pytest, coverage) Run tests and coverage
+        name: (pytest) Run tests
         stages: [push]
-        entry: coverage run -m pytest && coverage html
+        entry: coverage run -m pytest
+        types: [python]
+        language: system
+        require_serial: true
+        pass_filenames: false
+        always_run: true
+
+      - id: coverage
+        name: (coverage) Output test coverage
+        stages: [push]
+        entry: coverage html
         types: [python]
         language: system
         require_serial: true

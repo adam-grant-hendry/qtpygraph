@@ -262,6 +262,7 @@ jobs:
 
       - name: Get Incremented Changelog
         id: cz
+        uses: commitizen-tools/commitizen-action@v0.15.0
         with:
           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           changelog_increment_filename: changes.md
