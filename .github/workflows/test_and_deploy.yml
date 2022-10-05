@@ -278,4 +278,4 @@ jobs:
         run: |
           poetry config repositories.test-pypi https://test.pypi.org/legacy/
           poetry config pypi-token.test-pypi $PYPI_PASSWORD
-          poetry publish --skip-existing --username $TEST_PYPI_USERNAME --password $TEST_PYPI_PASSWORD
+          poetry publish --skip-existing --username $PYPI_USERNAME --password $PYPI_PASSWORD
