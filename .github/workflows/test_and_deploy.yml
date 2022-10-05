@@ -24,6 +24,7 @@ jobs:
           - os: MacOS
             image: macos-12
       fail-fast: false
+
     defaults:
       run:
         shell: bash
@@ -113,6 +114,8 @@ jobs:
         uses: pyvista/setup-headless-display-action@v1
 
       - name: Run tests
+        env:
+          QT_QPA_PLATFORM: "offscreen"
         run: poetry run tox
 
       - name: Upload Coverage Artifacts
@@ -171,7 +174,7 @@ jobs:
           valColorRAnge: ${{ env.total_coverage }}
 
   release:
-    if: github.event_name == 'push' && startsWith(github.eent.ref, 'refs/tags')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
 
     needs: [test, coverage]
 
