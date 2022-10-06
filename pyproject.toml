@@ -389,8 +389,8 @@ testpaths = [
 doctest_plus = "enabled"
 env = [
     # See https://github.com/pytest-dev/pytest-qt/issues/437
-    "D:PYTEST_QT_API=pyside6",  # pytest-qt
-    "D:QT_API=pyside6"  # qtpy
+    # "D:PYTEST_QT_API=pyside6",  # pytest-qt
+    # "D:QT_API=pyside6"  # qtpy
     # "D:QT_QPA_PLATFORM=offscreen"
     # "D:COVERAGE_DEBUG=trace",
     # "D:COVERAGE_DEBUG_FILE=debug_log.txt"
@@ -422,6 +422,7 @@ python =
 
 [testenv]
 allowlist_externals =
+    poetry
     pytest
 setenv =
     # See: https://github.com/tox-dev/tox/issues/1550
