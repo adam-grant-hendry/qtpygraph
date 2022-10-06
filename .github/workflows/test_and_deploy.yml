@@ -99,7 +99,7 @@ jobs:
         if: steps.python-cache.outputs.cache-hit != 'true'
         run: |
           poetry run pip install --upgrade pip
-          poetry install --no-root
+          poetry install
 
       - name: Install GitHub Actions Dependencies
         run: |
