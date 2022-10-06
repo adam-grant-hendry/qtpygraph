@@ -275,9 +275,11 @@ jobs:
 
       - name: Get Incremented Changelog
         id: cz
-        uses: commitizen-tools/commitizen-action@v0.15.0
+        # Only runs on Ubuntu, but we only need this performed once
+        if: matrix.os == 'Ubuntu'
+        uses: commitizen-tools/commitizen-action@0.15.0
         with:
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           changelog_increment_filename: changes.md
           push: false
           commit: false
@@ -287,12 +289,20 @@ jobs:
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
+        if: matrix.os == 'Ubuntu'
         with:
           files: "dist/*"
           body_path: "changes.md"
-          tag_name: ${{ env.REVISION }}
+          tag_name: ${{ github.ref_name }}
 
-      - name: Upload To PyPI (Windows)
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: matrix.os != 'Ubuntu'
+        with:
+          files: "dist/*"
+          tag_name: ${{ github.ref_name }}
+
+      - name: Upload To PyPI
         env:
           PYPI_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
           PYPI_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
