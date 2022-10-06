@@ -433,15 +433,16 @@ setenv =
     # pyqt6: QT_API=pyqt6
     # pyside6: PYTEST_QT_API=pyside6
     # pyside6: QT_API=pyside6
-    QT_QPA_PLATFORM=offscreen
+    # QT_QPA_PLATFORM=offscreen
     # See: https://github.com/tox-dev/tox/issues/1550
     PYTHONIOENCODING=utf-8
     COVERAGE_FILE=tox-.coverage.{envname}
 commands =
-    # pyqt5: poetry run python -m pip install PyQt5 PyQt5-stubs
-    # pyside2: poetry run python -m pip install PySide2 PySide2-stubs
-    # pyqt6: poetry run python -m pip install PyQt6 IceSpringPySideStubs-PyQt6
-    # pyside6: poetry run python -m pip install PySide6 IceSpringPySideStubs-PySide6
+    poetry install --no-root
+    pyqt5: poetry run python -m pip install PyQt5 PyQt5-stubs
+    pyside2: poetry run python -m pip install PySide2 PySide2-stubs
+    pyqt6: poetry run python -m pip install PyQt6 IceSpringPySideStubs-PyQt6
+    pyside6: poetry run python -m pip install PySide6 IceSpringPySideStubs-PySide6
     poetry run pytest
 
 # Not run by default. To run, use `tox -e coverage`

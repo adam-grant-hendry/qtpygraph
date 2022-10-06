@@ -93,7 +93,7 @@ jobs:
         id: tox-cache
         with:
           path: .tox
-          key: tox-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ matrix.qt-lib }}-${{ hashFiles('**/poetry.lock') }}
+          key: tox-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-${{ matrix.qt-lib }}-${{ hashFiles('**/.tox') }}
 
       - name: Install Dependencies
         if: steps.python-cache.outputs.cache-hit != 'true'
