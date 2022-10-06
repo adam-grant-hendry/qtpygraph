@@ -139,7 +139,7 @@ jobs:
           QT_QPA_PLATFORM: "offscreen"
           PYTEST_QT_API: ${{ matrix.qt-lib }}
           QT_API: ${{ matrix.qt-lib }}
-        run: poetry run tox -e ${{ matrix.tox-env }}-${{ matrix.qt-lib }} -- -ra --color=yes
+        run: poetry run tox -e ${{ matrix.tox-env }}-${{ matrix.qt-lib }}
 
       - name: Upload Coverage Artifacts
         uses: actions/upload-artifact@v3
