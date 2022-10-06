@@ -433,7 +433,7 @@ setenv =
     pyqt6: QT_API=pyqt6
     pyside6: PYTEST_QT_API=pyside6
     pyside6: QT_API=pyside6
-    # QT_QPA_PLATFORM=offscreen
+    QT_QPA_PLATFORM=offscreen
     # See: https://github.com/tox-dev/tox/issues/1550
     PYTHONIOENCODING=utf-8
     COVERAGE_FILE=tox-.coverage.{envname}
