@@ -425,23 +425,23 @@ allowlist_externals =
     poetry
     pytest
 setenv =
-    pyqt5: PYTEST_QT_API=pyqt5
-    pyqt5: QT_API=pyqt5
-    pyside2: PYTEST_QT_API=pyside2
-    pyside2: QT_API=pyside2
-    pyqt6: PYTEST_QT_API=pyqt6
-    pyqt6: QT_API=pyqt6
-    pyside6: PYTEST_QT_API=pyside6
-    pyside6: QT_API=pyside6
+    # pyqt5: PYTEST_QT_API=pyqt5
+    # pyqt5: QT_API=pyqt5
+    # pyside2: PYTEST_QT_API=pyside2
+    # pyside2: QT_API=pyside2
+    # pyqt6: PYTEST_QT_API=pyqt6
+    # pyqt6: QT_API=pyqt6
+    # pyside6: PYTEST_QT_API=pyside6
+    # pyside6: QT_API=pyside6
     QT_QPA_PLATFORM=offscreen
     # See: https://github.com/tox-dev/tox/issues/1550
     PYTHONIOENCODING=utf-8
     COVERAGE_FILE=tox-.coverage.{envname}
 commands =
-    pyqt5: poetry run python -m pip install PyQt5 PyQt5-stubs
-    pyside2: poetry run python -m pip install PySide2 PySide2-stubs
-    pyqt6: poetry run python -m pip install PyQt6 IceSpringPySideStubs-PyQt6
-    pyside6: poetry run python -m pip install PySide6 IceSpringPySideStubs-PySide6
+    # pyqt5: poetry run python -m pip install PyQt5 PyQt5-stubs
+    # pyside2: poetry run python -m pip install PySide2 PySide2-stubs
+    # pyqt6: poetry run python -m pip install PyQt6 IceSpringPySideStubs-PyQt6
+    # pyside6: poetry run python -m pip install PySide6 IceSpringPySideStubs-PySide6
     poetry run pytest
 
 # Not run by default. To run, use `tox -e coverage`
