@@ -104,6 +104,7 @@ types-toml = ">=0.10.7"
 typing-extensions = ">=4.2.0"
 vulture = ">=2.3"
 wheel = ">=0.37.1"
+cz-emoji = "^0.4.0"
 
 [tool.bandit]
 skips = [
@@ -388,8 +389,8 @@ testpaths = [
 doctest_plus = "enabled"
 env = [
     # See https://github.com/pytest-dev/pytest-qt/issues/437
-    "D:PYTEST_QT_API=pyside6",  # pytest-qt
-    "D:QT_API=pyside6"  # qtpy
+    # "D:PYTEST_QT_API=pyside6",  # pytest-qt
+    # "D:QT_API=pyside6"  # qtpy
     # "D:QT_QPA_PLATFORM=offscreen"
     # "D:COVERAGE_DEBUG=trace",
     # "D:COVERAGE_DEBUG_FILE=debug_log.txt"
@@ -424,19 +425,11 @@ allowlist_externals =
     poetry
     pytest
 setenv =
-    pyqt5: PYTEST_QT_API=pyqt5
-    pyqt5: QT_API=pyqt5
-    pyside2: PYTEST_QT_API=pyside2
-    pyside2: QT_API=pyside2
-    pyqt6: PYTEST_QT_API=pyqt6
-    pyqt6: QT_API=pyqt6
-    pyside6: PYTEST_QT_API=pyside6
-    pyside6: QT_API=pyside6
-    QT_QPA_PLATFORM=offscreen
     # See: https://github.com/tox-dev/tox/issues/1550
     PYTHONIOENCODING=utf-8
     COVERAGE_FILE=tox-.coverage.{envname}
 commands =
+    poetry install --no-root --sync
     pyqt5: poetry run python -m pip install PyQt5 PyQt5-stubs
     pyside2: poetry run python -m pip install PySide2 PySide2-stubs
     pyqt6: poetry run python -m pip install PyQt6 IceSpringPySideStubs-PyQt6
@@ -469,17 +462,21 @@ parallel_show_output = true
 # Not run by default. To run, use `tox -e docs`
 [testenv:docs]
 allowlist_externals =
-    poetry
     sphinx-build
 commands =
-    poetry run sphinx-build -W --keep-going -b docs docs/build
+    sphinx-build -W --keep-going -b docs docs/build
 """
 
 # Currently, poetry only supports pure python builds. This (undocumented) feature
 # tells poetry to build wheels for the Host OS
 [tool.poetry.build]
 generate-setup-file = false
+script = 'build.py'
 
 [build-system]
-requires = ["poetry-core>=1.2.0"]
-build-backend = "poetry.core.masonry.api"
+requires = [
+    "setuptools>=45",
+    "wheel",
+    "toml",
+]
+build-backend = "setuptools.build_meta"

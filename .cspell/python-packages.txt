@@ -9,6 +9,7 @@ pyright
 pyside
 pytestqt
 pyupgrade
+pyvista
 qtpy
 qtpygraph
 rstcheck
