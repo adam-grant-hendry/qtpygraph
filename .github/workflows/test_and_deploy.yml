@@ -65,8 +65,9 @@ jobs:
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
 
       - name: Install and Configure Poetry
-        uses: snok/install-poetry@v1
+        uses: snok/install-poetry@v1.3.1
         with:
+          virtualenvs-create: true
           virtualenvs-in-project: true
 
       - name: Print `poetry` Version
@@ -207,6 +208,9 @@ jobs:
       - name: Check out the Repository
         uses: actions/checkout@v3
 
+      - name: Get Tag
+        run: echo "GIT_TAG=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
+
       - name: Update Ubuntu
         if: matrix.os == 'Ubuntu'
         run: |
@@ -223,8 +227,9 @@ jobs:
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
 
       - name: Install and Configure Poetry
-        uses: snok/install-poetry@v1
+        uses: snok/install-poetry@v1.3.1
         with:
+          virtualenvs-create: true
           virtualenvs-in-project: true
 
       - name: Print `poetry` Version
@@ -293,14 +298,14 @@ jobs:
         with:
           files: "dist/*"
           body_path: "changes.md"
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ env.GIT_TAG }}
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         if: matrix.os != 'Ubuntu'
         with:
           files: "dist/*"
-          tag_name: ${{ github.ref_name }}
+          tag_name: ${{ env.GIT_TAG }}
 
       - name: Upload To PyPI
         env:
