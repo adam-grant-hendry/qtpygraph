@@ -18,6 +18,8 @@ env:
 
 jobs:
   test:
+    if: "!startsWith(github.event.head_commit.message, 'bump:')"
+
     strategy:
       matrix:
         os: [Windows, macOS, Ubuntu]
