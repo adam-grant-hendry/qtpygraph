@@ -152,13 +152,13 @@ jobs:
             dist/*
           allowUpdates: true
           tag: ${{ steps.git-tag.outputs.semver }}
+          omitBodyDuringUpdate: true
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       - name: Upload Wheel To PyPI
         env:
-          PYPI_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
-          PYPI_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
+          PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
-          poetry config repositories.test-pypi https://test.pypi.org/legacy/
-          poetry config pypi-token.test-pypi $PYPI_PASSWORD
-          poetry publish --repository test-pypi --skip-existing --username $PYPI_USERNAME --password $PYPI_PASSWORD
+          poetry config pypi-token.pypi $PYPI_PASSWORD
+          poetry publish --skip-existing --username $PYPI_USERNAME --password $PYPI_PASSWORD
