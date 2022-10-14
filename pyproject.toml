@@ -26,7 +26,7 @@ packages = [
 [tool.poetry.dependencies]
 add-trailing-comma = ">=2.2.3"
 appdirs = ">=1.4.4"
-bandit = { extras = ["toml"], version = ">=1.7.4" }
+bandit = { extras = ["toml"], git = "https://github.com/PyCQA/bandit.git", branch = "main" }
 beautifulsoup4 = ">=4.11.1"
 black = ">=22.3.0"
 blackdoc = ">=0.3.4"
@@ -34,7 +34,7 @@ blacken-docs = ">=1.12.1"
 check-jsonschema = ">=0.14.3"
 codecov = ">=2.1.12"
 codespell = ">=2.1.0"
-commitizen = ">=2.27.0"
+commitizen = { git = "https://github.com/adam-grant-hendry/commitizen.git", branch = "feat/unicode" }
 coverage = { extras = ["toml"], version = ">=6.4" }
 doc8 = ">=0.11.2"
 docformatter = ">=1.4"
@@ -90,8 +90,9 @@ seedir = ">=0.3.0"
 setuptools = "^65.3.0"
 setuptools-scm = "^7.0.5"
 Sphinx = ">=4.5.0"
-sphinx-rtd-theme = ">=1.0.0"
+sphinx-book-theme = "^0.3.3"
 sphinxcontrib-email = ">=0.3.5"
+sphinxcontrib-mermaid = "^0.7.1"
 sphinxcontrib-napoleon = ">=0.7"
 toml = ">=0.10.2"
 tomli = ">=2.0.1"
@@ -104,7 +105,6 @@ types-toml = ">=0.10.7"
 typing-extensions = ">=4.2.0"
 vulture = ">=2.3"
 wheel = ">=0.37.1"
-cz-emoji = "^0.4.0"
 
 [tool.bandit]
 skips = [
@@ -128,37 +128,57 @@ version_files = [
 ]
 update_changelog_on_bump = true
 annotated_tag = true
+gpg_sign = true
 tag_format = "$version"
+style = [
+    ["qmark", "fg:#ff9d00 bold"],
+    ["question", "italic"],
+    ["answer", "fg:#ff9d00 bold"],
+    ["pointer", "fg:#ff9d00 bold"],
+    ["highlighted", "fg:#ff9d00 bold"],
+    ["selected", "fg:#cc5454"],
+    ["separator", "fg:#cc5454"],
+    ["instruction", ""],
+    ["text", ""],
+    ["disabled", "fg:#858585 italic"]
+]
 
 [tool.commitizen.customize]
-message_template = "{{change_type}}({{scope}}){% if is_breaking_change == true %}!{% endif %}: {{subject}}{% if body %}\n\n{{body}}{% endif %}{% if footer %}\n\n{% if is_breaking_change == true %}BREAKING CHANGE: {% endif %}{{footer}}{% endif %}"
-schema_pattern = '(feat|fix|refactor|bump)(\(\S+\))?!?:(\s.*)'
-bump_pattern = '^(feat|fix)(\(.+\))?(!)?'
-bump_map = { break = "MAJOR", feat = "MINOR", fix = "PATCH" }
-change_type_order = ["BREAKING CHANGE", "feat", "fix"]
-commit_parser = '(?P<change_type>feat|fix|refactor)(?:\((?P<scope>[^()\r\n]*)\)|\()?(?P<breaking>!)?:\s(?P<message>.*)?'
-changelog_pattern = '^(feat|fix|refactor)?(!)?'
-change_type_map = { feat = "Feat", fix = "Fix", refactor = "Refactor" }
+message_template = "{{change_type}}({{scope}}){% if is_breaking_change == true %}!{% endif %}: {{subject}}{% if body %}\n\n{{body}}{% endif %}{% if footer %}\n\n{{footer}}{% endif %}"
+schema_pattern = '(✨? ?feat|🐛? ?fix|♻️? ?refactor|📚? ?docs|🤖? ?ci|🧪? ?test|⬆️? ?perf|🗑️? ?deprecate|🧹? ?chore|❓? ?other)(\(\S+\))?!?:(\s.*)'
+bump_pattern = '^(✨? ?feat|🐛? ?fix|♻️? ?refactor|📚? ?docs|🤖? ?ci|🧪? ?test|⬆️? ?perf|🗑️? ?deprecate|🧹? ?chore|❓? ?other)(\(.+\))?(!)?'
+bump_map = { "^.+!$" = "MAJOR", "✨? ?feat" = "MINOR", "🐛? ?fix" = "PATCH", "♻️? ?refactor" = "PATCH", "📚? ?docs" = "PATCH", "🤖? ?ci" = "PATCH", "🧪? ?test" = "PATCH", "⬆️? ?perf" = "PATCH", "🗑️? ?deprecate" = "PATCH", "🧹? ?chore" = "PATCH", "❓? ?other" = "PATCH" }
+change_type_order = ["!", "✨? ?feat", "🐛? ?fix", "♻️? ?refactor", "📚? ?docs", "🤖? ?ci", "🧪? ?test", "⬆️? ?perf", "🗑️? ?deprecate", "🧹? ?chore", "❓? ?other"]
+commit_parser = '^(?P<change_type>(?:✨ )feat|🐛 fix|♻️ refactor|📚 docs|🤖 ci|🧪 test|⬆️ perf|🗑️ deprecate|🧹 chore|❓ other)(?:\((?P<scope>[^()\r\n]*)\)|\()?(?P<breaking>!)?:\s(?P<message>.*)?'
+changelog_pattern = '^(feat|🐛 fix|♻️ refactor|📚 docs|🤖 ci|🧪 test|⬆️ perf|🗑️ deprecate|🧹 chore|❓ other)?(?:[)])(!)?'
+change_type_map = { "✨? ?feat" = "Feat", "🐛? ?fix" = "Fix", "♻️? ?refactor" = "Refactor", "📚? ?docs" = "Docs", "🤖? ?ci" = "CI", "🧪? ?test" = "Test", "⬆️? ?perf" = "Performance", "🗑️? ?deprecate" = "Deprecate", "🧹? ?chore" = "Chore", "❓? ?other" = "Other"}
 
 [[tool.commitizen.customize.questions]]
 name = "change_type"
 type = "list"
-message = "Select the type of change you are committing"
+message = "Select the change type"
 choices = [
-    { value = "feat", name = "feat: (Bumps MINOR) Add/remove an item/feature" },
-    { value = "fix", name = "fix: (Bumps PATCH) Fix/modify an existing item/feature" },
-    { value = "refactor", name = "refactor: (Bumps nothing) Reorganizes item(s); not a 'feat' or 'fix'" },
+    { value = "✨ feat", name = "✨ feat: (Bumps MINOR) Adds/removes an item/feature" },
+    { value = "🐛 fix", name = "🐛 fix: (Bumps PATCH) Changes existing item(s)/feature(s)" },
+    { value = "♻️ refactor", name = "♻️ refactor: (Bumps PATCH) Reorganizes item(s); not a 'feat' or 'fix'" },
+    { value = "📚 docs", name = "📚 docs: (Bumps PATCH) Changes documentation" },
+    { value = "🤖 ci", name = "🤖 ci: (Bumps PATCH) Changes CI files" },
+    { value = "🧪 test", name = "🧪 test: (Bumps PATCH) Adds/modifies tests" },
+    { value = "⬆️ perf", name = "⬆️ perf: (Bumps PATCH) Improves performance" },
+    { value = "🗑️ deprecate", name = "🗑️ deprecate: (Bumps PATCH) Deprecates a feature" },
+    { value = "🧹 chore", name = "🧹 chore: (Bumps PATCH) Changes style (spelling, formatting, etc.)" },
+    { value = "❓ other", name = "❓ other: (Bumps PATCH) Changes something not in an existing category" },
 ]
 
 [[tool.commitizen.customize.questions]]
 name = "scope"
 type = "input"
-message = "Scope. Enter the scope of the change, category first (docs/test/ci/build/perf), followed by class or file name if applicable (comma-separated, no spaces):\n"
+message = "Scope. Entry the module, folder, file, or entity modified (as perceived by the author):\n"
 
 [[tool.commitizen.customize.questions]]
 name = "subject"
 type = "input"
-message = "Subject. Enter the short summary of the change (imperative tone, lowercase, no period):\n"
+message = "Subject. Enter a short summary of the change (imperative tone, lowercase, no period):\n"
 
 [[tool.commitizen.customize.questions]]
 name = "is_breaking_change"
@@ -169,12 +189,12 @@ default = false
 [[tool.commitizen.customize.questions]]
 name = "body"
 type = "input"
-message = "Body. Enter complete details about the change (use full sentences with proper grammar): (press [enter] to skip):\n"
+message = "Body. Enter details about the change (use full sentences with proper grammar): (Press [Enter] to skip):\n"
 
 [[tool.commitizen.customize.questions]]
 name = "footer"
 type = "input"
-message = "Footer. Reference any Issues this change addresses. If a BREAKING CHANGE, enter details. (press [enter] to skip):\n"
+message = "Footer. Reference Issues/PRs/etc. this change addresses. (Press [Enter] to skip):\n"
 
 [tool.coverage.run]
 branch = true
