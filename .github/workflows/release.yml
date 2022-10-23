@@ -18,6 +18,10 @@ jobs:
     name: Create Release
     runs-on: ubuntu-22.04
 
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - name: Check out the Repository
         uses: actions/checkout@v3
@@ -25,12 +29,58 @@ jobs:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fetch-depth: 0
 
+      - name: Setup `python` 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+
+      - name: Setup GPG
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ secrets.CI_GPG_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_tag_gpgsign: true
+
       - name: Bump Version and Create Changelog
         id: cz
-        uses: commitizen-tools/commitizen-action@0.15.0
-        with:
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          changelog_increment_filename: changes.md
+        env:
+          CI_USER_NAME: ${{ secrets.CI_USER_NAME }}
+          CI_USER_EMAIL: ${{ secrets.CI_USER_EMAIL }}
+          CI_GPG_KEY: ${{ secrets.CI_GPG_KEY }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          echo "Install commitizen"
+          pip install git+https://github.com/adam-grant-hendry/commitizen.git@feat/unicode
+
+          echo "Configure Git username, email, and pull behavior..."
+          git config --local user.name "${CI_USER_NAME}"
+          git config --local user.email "${CI_USER_EMAIL}"
+          git config --local pull.rebase true
+
+          echo "Bump version..."
+          OLD_VERSION="$(cz version --project)"
+
+          cz --no-raise 21 bump \
+          --yes \
+          --gpg-sign \
+          --changelog \
+          --check-consistency \
+          --changelog-to-stdout > changes.md
+
+          NEW_VERSION="$(cz version --project)"
+          CURRENT_BRANCH="$(git branch --show-current)"
+          INPUT_BRANCH="${INPUT_BRANCH:-$CURRENT_BRANCH}"
+          INPUT_REPOSITORY="${INPUT_REPOSITORY:-$GITHUB_REPOSITORY}"
+          REMOTE_REPO="https://${GITHUB_ACTOR}:${PERSONAL_ACCESS_TOKEN}@github.com/${INPUT_REPOSITORY}.git"
+
+          echo "Push to branch..."
+          git pull "$REMOTE_REPO" "$INPUT_BRANCH"
+          git push "$REMOTE_REPO" "HEAD:${INPUT_BRANCH}" --tags
+
+          # Output version number for next steps
+          echo "REVISION=${NEW_VERSION}" >> $GITHUB_ENV
+        shell: bash
 
       - name: Create Release
         id: release

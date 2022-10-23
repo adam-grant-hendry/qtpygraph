@@ -127,7 +127,6 @@ version_files = [
     "pyproject.toml:version",
 ]
 update_changelog_on_bump = true
-annotated_tag = true
 gpg_sign = true
 tag_format = "$version"
 style = [
@@ -149,9 +148,9 @@ schema_pattern = '(✨? ?feat|🐛? ?fix|♻️? ?refactor|📚? ?docs|🤖? ?ci
 bump_pattern = '^(✨? ?feat|🐛? ?fix|♻️? ?refactor|📚? ?docs|🤖? ?ci|🧪? ?test|⬆️? ?perf|🗑️? ?deprecate|🧹? ?chore|❓? ?other)(\(.+\))?(!)?'
 bump_map = { "^.+!$" = "MAJOR", "✨? ?feat" = "MINOR", "🐛? ?fix" = "PATCH", "♻️? ?refactor" = "PATCH", "📚? ?docs" = "PATCH", "🤖? ?ci" = "PATCH", "🧪? ?test" = "PATCH", "⬆️? ?perf" = "PATCH", "🗑️? ?deprecate" = "PATCH", "🧹? ?chore" = "PATCH", "❓? ?other" = "PATCH" }
 change_type_order = ["!", "✨? ?feat", "🐛? ?fix", "♻️? ?refactor", "📚? ?docs", "🤖? ?ci", "🧪? ?test", "⬆️? ?perf", "🗑️? ?deprecate", "🧹? ?chore", "❓? ?other"]
-commit_parser = '^(?P<change_type>(?:✨ )feat|🐛 fix|♻️ refactor|📚 docs|🤖 ci|🧪 test|⬆️ perf|🗑️ deprecate|🧹 chore|❓ other)(?:\((?P<scope>[^()\r\n]*)\)|\()?(?P<breaking>!)?:\s(?P<message>.*)?'
-changelog_pattern = '^(feat|🐛 fix|♻️ refactor|📚 docs|🤖 ci|🧪 test|⬆️ perf|🗑️ deprecate|🧹 chore|❓ other)?(?:[)])(!)?'
-change_type_map = { "✨? ?feat" = "Feat", "🐛? ?fix" = "Fix", "♻️? ?refactor" = "Refactor", "📚? ?docs" = "Docs", "🤖? ?ci" = "CI", "🧪? ?test" = "Test", "⬆️? ?perf" = "Performance", "🗑️? ?deprecate" = "Deprecate", "🧹? ?chore" = "Chore", "❓? ?other" = "Other"}
+commit_parser = '^(?P<change_type>✨? ?feat|🐛? ?fix|♻️? ?refactor|📚? ?docs|🤖? ?ci|🧪? ?test|⬆️? ?perf|🗑️? ?deprecate|🧹? ?chore|❓? ?other)(?:\((?P<scope>[^()\r\n]*)\)|\()?(?P<breaking>!)?:\s(?P<message>.*)?'
+changelog_pattern = '^(✨? ?feat|🐛? ?fix|♻️? ?refactor|📚? ?docs|🤖? ?ci|🧪? ?test|⬆️? ?perf|🗑️? ?deprecate|🧹? ?chore|❓? ?other)?(?:[)])(!)?'
+change_type_map = { "✨? ?feat" = "✨ Feature", "🐛? ?fix" = "🐛 Bug Fix", "♻️? ?refactor" = "♻️ Refactor", "📚? ?docs" = "📚 Docs", "🤖? ?ci" = "🤖 CI", "🧪? ?test" = "🧪 Test", "⬆️? ?perf" = "⬆️ Performance", "🗑️? ?deprecate" = "🗑️ Deprecate", "🧹? ?chore" = "🧹 Chore", "❓? ?other" = "❓ Other"}
 
 [[tool.commitizen.customize.questions]]
 name = "change_type"
