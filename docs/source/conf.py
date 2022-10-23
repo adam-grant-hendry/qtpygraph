@@ -10,8 +10,6 @@ import os
 import sys
 from importlib import metadata
 
-import sphinx_rtd_theme  # type: ignore[import]
-
 # -- Project information ----------------------------------------------------------------
 
 project = 'QtPyGraph'
@@ -43,12 +41,11 @@ for pkg in packages:
 
 extensions: list[str] = [
     'numpydoc',
-    'sphinx_rtd_theme',
+    'sphinx_book_theme',
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
     'sphinxcontrib.email',
-    'myst_parser',
 ]
 
 # -- General configuration --------------------------------------------------------------
@@ -73,8 +70,6 @@ html_css_files = [
 html_style = 'css/style.css'
 
 # html_logo = r'./_resources/img/qtpygraph_logo.png'
-html_theme = 'sphinx_rtd_theme'
-html_theme_path: list[str] = [sphinx_rtd_theme.get_html_theme_path()]
 
 # String appended to project name with hyphen in ``<title>`` tag of individual pages and
 # used in the navigation bar as the “topmost” element. It defaults to '<project>
