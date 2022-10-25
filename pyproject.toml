@@ -34,7 +34,6 @@ check-jsonschema = ">=0.14.3"
 codecov = ">=2.1.12"
 codespell = ">=2.1.0"
 coverage = { extras = ["toml"], version = ">=6.4" }
-doc8 = ">=0.11.2"
 docformatter = ">=1.4"
 flake8 = ">=4.0.1"
 flake8-bugbear = ">=22.9.11"
@@ -55,7 +54,6 @@ memory-profiler = ">=0.60.0"
 merry = ">=0.3.0"
 mypy = ">=0.961"
 mypy-extensions = ">=0.4.3"
-myst-parser = ">=0.17.2"
 ninja = ">=1.10.2"
 numpy = ">=1.22.3"
 numpydoc = ">=1.4.0"
@@ -262,12 +260,6 @@ others = [
     "qtpygraph/",
     "*/qtpygraph",
 ]
-
-[tool.doc8]
-ignore = [
-    "D004"  # Ignore CRLF (Not working: see https://github.com/PyCQA/doc8/issues/78)
-]
-max-line-length = 90
 
 [tool.isort]
 profile = "black"

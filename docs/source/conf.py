@@ -53,8 +53,8 @@ extensions: list[str] = [
 # -- General configuration --------------------------------------------------------------
 
 # Paths are relative to ``source``
-templates_path = ['_templates']
-html_static_path = ['_static']
+# templates_path = ['_templates']
+# html_static_path = ['_static']
 
 source_suffix = '.rst'
 master_doc = 'index'
@@ -66,10 +66,11 @@ exclude_patterns: list[str] = [
 
 # -- HTML Output ------------------------------------------------------------------------
 
-html_css_files = [
-    'css/custom.css',
-]
-html_style = 'css/style.css'
+html_theme = 'sphinx_book_theme'
+# html_css_files = [
+#     'css/custom.css',
+# ]
+# html_style = 'css/style.css'
 
 # html_logo = r'./_resources/img/qtpygraph_logo.png'
 
@@ -81,13 +82,8 @@ html_title = ''
 html_short_title = project
 
 html_theme_options = {
-    'display_version': True,
-    'prev_next_buttons_location': 'bottom',
-    'collapse_navigation': True,
-    'sticky_navigation': True,
-    'navigation_depth': 4,
-    'includehidden': True,
-    'titles_only': False,
+    'repository_url': 'https://github.com/adam-grant-hendry/qtpygraph',
+    'use_repository_button': True,
 }
 
 # Removes the "View Source" hyperlink
