@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   create-release:
-    if: "!startsWith(github.event.head_commit.message, 'bump:')"
+    if: "!startsWith(github.event.head_commit.message, '🚀 bump:')"
 
     name: Create Release
     runs-on: ubuntu-22.04
@@ -35,9 +35,11 @@ jobs:
           python-version: 3.8
 
       - name: Setup GPG
+        id: gpg
         uses: crazy-max/ghaction-import-gpg@v5
         with:
           gpg_private_key: ${{ secrets.CI_GPG_KEY }}
+          passphrase: ${{ secrets.CI_GPG_PASSPHRASE }}
           git_user_signingkey: true
           git_commit_gpgsign: true
           git_tag_gpgsign: true
@@ -45,18 +47,21 @@ jobs:
       - name: Bump Version and Create Changelog
         id: cz
         env:
-          CI_USER_NAME: ${{ secrets.CI_USER_NAME }}
-          CI_USER_EMAIL: ${{ secrets.CI_USER_EMAIL }}
-          CI_GPG_KEY: ${{ secrets.CI_GPG_KEY }}
+          CI_USER_NAME: ${{ steps.gpg.outputs.name }}
+          CI_USER_EMAIL: ${{ steps.gpg.outputs.email }}
+          CI_SIGNINGKEY: ${{ steps.gpg.outputs.keyid }}
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
           echo "Install commitizen"
           pip install git+https://github.com/adam-grant-hendry/commitizen.git@feat/unicode
 
-          echo "Configure Git username, email, and pull behavior..."
+          echo "Configure Git..."
           git config --local user.name "${CI_USER_NAME}"
           git config --local user.email "${CI_USER_EMAIL}"
+          git config --local user.signingkey "${CI_SIGNINGKEY}"
           git config --local pull.rebase true
+          git config --local commit.gpgsign true
+          git config --local tag.gpgsign true
 
           echo "Bump version..."
           OLD_VERSION="$(cz version --project)"
@@ -79,7 +84,7 @@ jobs:
           git push "$REMOTE_REPO" "HEAD:${INPUT_BRANCH}" --tags
 
           # Output version number for next steps
-          echo "REVISION=${NEW_VERSION}" >> $GITHUB_ENV
+          echo "REVISION=${NEW_VERSION}" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: Create Release
@@ -89,7 +94,7 @@ jobs:
           body_path: "changes.md"
           files: |
             LICENSE
-          tag_name: ${{ env.REVISION }}
+          tag_name: ${{ steps.cz.outputs.REVISION }}
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
@@ -176,7 +181,7 @@ jobs:
         if: steps.python-cache.outputs.cache-hit != 'true'
         run: |
           poetry run pip install --upgrade pip
-          poetry install --no-root
+          poetry install --no-root --without dev
           poetry run python -m pip install tox-gh-actions
           poetry run python -m pip install pytest-github-actions-annotate-failures
 
@@ -199,7 +204,7 @@ jobs:
         uses: ncipollo/release-action@v1.11.1
         with:
           artifacts: |
-            dist/*
+            dist/*.tar.gz
           allowUpdates: true
           tag: ${{ steps.git-tag.outputs.semver }}
           omitBodyDuringUpdate: true

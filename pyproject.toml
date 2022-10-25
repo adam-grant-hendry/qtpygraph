@@ -26,7 +26,6 @@ packages = [
 [tool.poetry.dependencies]
 add-trailing-comma = ">=2.2.3"
 appdirs = ">=1.4.4"
-bandit = { extras = ["toml"], git = "https://github.com/PyCQA/bandit.git", branch = "main" }
 beautifulsoup4 = ">=4.11.1"
 black = ">=22.3.0"
 blackdoc = ">=0.3.4"
@@ -34,7 +33,6 @@ blacken-docs = ">=1.12.1"
 check-jsonschema = ">=0.14.3"
 codecov = ">=2.1.12"
 codespell = ">=2.1.0"
-commitizen = { git = "https://github.com/adam-grant-hendry/commitizen.git", branch = "feat/unicode" }
 coverage = { extras = ["toml"], version = ">=6.4" }
 doc8 = ">=0.11.2"
 docformatter = ">=1.4"
@@ -106,6 +104,15 @@ typing-extensions = ">=4.2.0"
 vulture = ">=2.3"
 wheel = ">=0.37.1"
 
+[tool.poetry.group.dev.dependencies]
+# See https://github.com/PyCQA/bandit/issues/961
+bandit = { extras = ["toml"], git = "https://github.com/PyCQA/bandit.git", branch = "main" }
+# See:
+#   - https://github.com/commitizen-tools/commitizen/issues/604
+#   - https://github.com/commitizen-tools/commitizen/issues/602
+#   - https://github.com/commitizen-tools/commitizen/issues/516
+commitizen = { git = "https://github.com/adam-grant-hendry/commitizen.git", branch = "feat/unicode" }
+
 [tool.bandit]
 skips = [
     "B101",
@@ -129,6 +136,7 @@ version_files = [
 update_changelog_on_bump = true
 gpg_sign = true
 tag_format = "$version"
+bump_message = "🚀 bump: version $current_version → $new_version"
 style = [
     ["qmark", "fg:#ff9d00 bold"],
     ["question", "italic"],
