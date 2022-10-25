@@ -8,15 +8,17 @@ from __future__ import annotations
 import importlib.resources as rsrc
 import os
 import sys
-from importlib import metadata
+from datetime import date
+
+import qtpygraph
 
 # -- Project information ----------------------------------------------------------------
 
 project = 'QtPyGraph'
-copyright = '2022, Adam Hendry'  # pylint: disable=redefined-builtin
+copyright = f'2022-{date.today().year}, Adam Hendry'  # pylint: disable=redefined-builtin
 author = 'Adam Hendry'
 root_package = 'qtpygraph'
-version = metadata.version(root_package)
+version = qtpygraph.__version__
 release = version
 
 # -- Path setup -------------------------------------------------------------------------
@@ -27,7 +29,6 @@ with rsrc.path(root_package, '__init__.py') as file_:
 packages = [
     root / root_package,
     root / r'docs',
-    root / r'logs',
     root / r'tests',
 ]
 
@@ -46,6 +47,7 @@ extensions: list[str] = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
     'sphinxcontrib.email',
+    'sphinxcontrib.mermaid',
 ]
 
 # -- General configuration --------------------------------------------------------------
