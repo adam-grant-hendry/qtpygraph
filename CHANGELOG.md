@@ -5,7 +5,7 @@
 -->
 ## 0.2.0 (2022-10-08)
 
-### Feat
+### ✨ Feat
 
 - **ci**: change `release` workflow to publish to PyPI
 - **ci**: make `release` a manual workflow
@@ -16,7 +16,7 @@
 - **ci**: add headless display action to `test.yml` (#3)
 - **ci**: add tox to github actions
 
-### Fix
+### 🐛 Fix
 
 - **ci**: update `tox` environments
 - **changelog**: remove comment from `markdownlint` configuration
@@ -25,6 +25,6 @@
 
 ## 0.1.0 (2022-09-24)
 
-### Feat
+### ✨ Feat
 
 - **init**: initial commit
