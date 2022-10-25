@@ -3,6 +3,21 @@
     "MD024": false
 }
 -->
+## 0.3.0 (2022-10-25)
+
+### ✨ Feature
+
+- **pyproject.toml**: use emojies with `cz` (#8)
+
+### 📚 Docs
+
+- **CHANGELOG.md**: use emojis
+
+### 🤖 CI
+
+- **release.yml**: modify config and release files
+- **release**: setup gpg
+
 ## 0.2.0 (2022-10-08)
 
 ### ✨ Feat
