@@ -34,4 +34,4 @@ def test_index(page: BeautifulSoup) -> None:
     return_value: str = page.find('title').contents[0].strip()  # type: ignore[union-attr]
 
     # Assert
-    assert return_value == expected_title
+    assert return_value.startswith(expected_title)
