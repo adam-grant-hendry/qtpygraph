@@ -77,7 +77,7 @@ html_theme = 'sphinx_book_theme'
 # String appended to project name with hyphen in ``<title>`` tag of individual pages and
 # used in the navigation bar as the “topmost” element. It defaults to '<project>
 # v<revision> documentation'. Remove so only project name appears in title.
-html_title = ''
+html_title = 'QtPyGraph'
 
 html_short_title = project
 
