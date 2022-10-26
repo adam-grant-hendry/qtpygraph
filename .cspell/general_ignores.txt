@@ -1,2 +1,0 @@
-# List of general items (prefixes, suffixes, etc.) that can be ignored
-izes

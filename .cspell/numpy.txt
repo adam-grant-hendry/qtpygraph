@@ -1,3 +1,0 @@
-# Numpy names
-astype
-ndarray

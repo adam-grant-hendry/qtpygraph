@@ -1,7 +1,0 @@
-# List of general software terms used in this package
-fspath
-genpyi
-Liskov
-picklable
-qgraphicsitem
-rcfile

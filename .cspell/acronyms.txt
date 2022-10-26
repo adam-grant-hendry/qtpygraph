@@ -1,3 +1,0 @@
-# Acronyms used in this project
-CICD
-pwsh
