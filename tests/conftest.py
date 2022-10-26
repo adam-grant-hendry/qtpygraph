@@ -62,7 +62,6 @@ def fixture_content(
     sphinx_app = make_app(
         buildername='html',
         srcdir=rootdir,
-        builddir=path(SRC).abspath(),
     )
     sphinx_app.build()
     yield sphinx_app

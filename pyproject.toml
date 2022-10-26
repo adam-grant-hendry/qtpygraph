@@ -34,7 +34,6 @@ check-jsonschema = ">=0.14.3"
 codecov = ">=2.1.12"
 codespell = ">=2.1.0"
 coverage = { extras = ["toml"], version = ">=6.4" }
-doc8 = ">=0.11.2"
 docformatter = ">=1.4"
 flake8 = ">=4.0.1"
 flake8-bugbear = ">=22.9.11"
@@ -48,13 +47,13 @@ instaviz = ">=0.6.0"
 ipdb = ">=0.13.9"
 ipython = ">=8.3.0"
 isort = ">=5.10.1"
+Jinja2 = ">=3.0,<3.1"  # See https://github.com/astropy/astropy/issues/11725
 lxml = ">=4.8.0"
 matplotlib = ">=3.5.2"
 memory-profiler = ">=0.60.0"
 merry = ">=0.3.0"
 mypy = ">=0.961"
 mypy-extensions = ">=0.4.3"
-myst-parser = ">=0.17.2"
 ninja = ">=1.10.2"
 numpy = ">=1.22.3"
 numpydoc = ">=1.4.0"
@@ -85,12 +84,15 @@ QtPy = ">=2.1.0"
 requests = ">=2.27.1"
 rstcheck = { extras = ["toml", "sphinx" ], version = ">=5.0.0" }
 seedir = ">=0.3.0"
-setuptools = "^65.3.0"
-setuptools-scm = "^7.0.5"
-Sphinx = ">=4.5.0"
-sphinx-book-theme = "^0.3.3"
+setuptools = ">=65.3.0"
+setuptools-scm = ">=7.0.5"
+Sphinx = [
+    { version = "<4", python = "<3.10" },
+    { version = "<3.5", python = ">=3.10" }
+]  # See https://github.com/astropy/astropy/issues/11725
+sphinx-book-theme = ">=0.3.3"
 sphinxcontrib-email = ">=0.3.5"
-sphinxcontrib-mermaid = "^0.7.1"
+sphinxcontrib-mermaid = ">=0.7.1"
 sphinxcontrib-napoleon = ">=0.7"
 toml = ">=0.10.2"
 tomli = ">=2.0.1"
@@ -261,12 +263,6 @@ others = [
     "qtpygraph/",
     "*/qtpygraph",
 ]
-
-[tool.doc8]
-ignore = [
-    "D004"  # Ignore CRLF (Not working: see https://github.com/PyCQA/doc8/issues/78)
-]
-max-line-length = 90
 
 [tool.isort]
 profile = "black"

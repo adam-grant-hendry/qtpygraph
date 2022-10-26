@@ -1,21 +1,21 @@
-=========
+#########
 QtPyGraph
-=========
+#########
 
 A pythonic interface to the ``Qt`` Graphics View Framework using ``qtpy``.
 
 .. toctree::
-   :hidden:
-   :glob:
-   :maxdepth: 3
-   :caption: Home Page:
-
-   self
+   :maxdepth: 2
+   :caption: Home Page
 
 .. toctree::
-   :hidden:
-   :glob:
-   :maxdepth: 3
-   :caption: Support:
+   :maxdepth: 2
+   :caption: Contributing
 
-   _pages/contact.rst
+   _pages/contributing
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Support
+
+   _pages/contact

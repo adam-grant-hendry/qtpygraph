@@ -8,15 +8,17 @@ from __future__ import annotations
 import importlib.resources as rsrc
 import os
 import sys
-from importlib import metadata
+from datetime import date
+
+import qtpygraph
 
 # -- Project information ----------------------------------------------------------------
 
 project = 'QtPyGraph'
-copyright = '2022, Adam Hendry'  # pylint: disable=redefined-builtin
+copyright = f'2022-{date.today().year}, Adam Hendry'  # pylint: disable=redefined-builtin
 author = 'Adam Hendry'
 root_package = 'qtpygraph'
-version = metadata.version(root_package)
+version = qtpygraph.__version__
 release = version
 
 # -- Path setup -------------------------------------------------------------------------
@@ -27,7 +29,6 @@ with rsrc.path(root_package, '__init__.py') as file_:
 packages = [
     root / root_package,
     root / r'docs',
-    root / r'logs',
     root / r'tests',
 ]
 
@@ -46,13 +47,14 @@ extensions: list[str] = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
     'sphinxcontrib.email',
+    'sphinxcontrib.mermaid',
 ]
 
 # -- General configuration --------------------------------------------------------------
 
 # Paths are relative to ``source``
-templates_path = ['_templates']
-html_static_path = ['_static']
+# templates_path = ['_templates']
+# html_static_path = ['_static']
 
 source_suffix = '.rst'
 master_doc = 'index'
@@ -64,10 +66,11 @@ exclude_patterns: list[str] = [
 
 # -- HTML Output ------------------------------------------------------------------------
 
-html_css_files = [
-    'css/custom.css',
-]
-html_style = 'css/style.css'
+html_theme = 'sphinx_book_theme'
+# html_css_files = [
+#     'css/custom.css',
+# ]
+# html_style = 'css/style.css'
 
 # html_logo = r'./_resources/img/qtpygraph_logo.png'
 
@@ -79,13 +82,8 @@ html_title = ''
 html_short_title = project
 
 html_theme_options = {
-    'display_version': True,
-    'prev_next_buttons_location': 'bottom',
-    'collapse_navigation': True,
-    'sticky_navigation': True,
-    'navigation_depth': 4,
-    'includehidden': True,
-    'titles_only': False,
+    'repository_url': 'https://github.com/adam-grant-hendry/qtpygraph',
+    'use_repository_button': True,
 }
 
 # Removes the "View Source" hyperlink
