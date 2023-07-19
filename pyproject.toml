@@ -105,6 +105,7 @@ types-toml = ">=0.10.7"
 typing-extensions = ">=4.2.0"
 vulture = ">=2.3"
 wheel = ">=0.37.1"
+emoji = "^2.6.0"
 
 [tool.poetry.group.dev.dependencies]
 # See https://github.com/PyCQA/bandit/issues/961
