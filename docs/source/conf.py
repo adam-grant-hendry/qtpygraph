@@ -53,8 +53,7 @@ extensions: list[str] = [
 # -- General configuration --------------------------------------------------------------
 
 # Paths are relative to ``source``
-# templates_path = ['_templates']
-# html_static_path = ['_static']
+html_static_path = ['_static']
 
 source_suffix = '.rst'
 master_doc = 'index'
@@ -68,10 +67,9 @@ exclude_patterns: list[str] = [
 
 html_theme = 'sphinx_book_theme'
 # html_logo = r'./_resources/img/qtpygraph_logo.png'
-# html_css_files = [
-#     'css/custom.css',
-# ]
-# html_style = 'css/style.css'
+html_css_files = [
+    'css/custom.css',
+]
 
 # String appended to project name with hyphen in ``<title>`` tag of individual pages and
 # used in the navigation bar as the “topmost” element. It defaults to '<project>
