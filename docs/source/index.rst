@@ -10,6 +10,12 @@ A pythonic interface to the ``Qt`` Graphics View Framework using ``qtpy``.
 
 .. toctree::
    :maxdepth: 2
+   :caption: Introduction
+
+   _pages/introduction
+
+.. toctree::
+   :maxdepth: 2
    :caption: Contributing
 
    _pages/contributing
