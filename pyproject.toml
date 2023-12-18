@@ -24,6 +24,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
+python = ">=3.8,<3.11"
 add-trailing-comma = ">=2.2.3"
 appdirs = ">=1.4.4"
 beautifulsoup4 = ">=4.11.1"
@@ -78,7 +79,6 @@ pytest-mock = ">=3.7.0"
 pytest-qt = ">=4.0.2"
 pytest-randomly = ">=3.11.0"
 pytest-xdist = ">=2.5.0"
-python = ">=3.8,<3.11"
 pyupgrade = ">=2.34.0"
 PyYAML = ">=6.0"
 QtPy = ">=2.1.0"
