@@ -1,7 +1,0 @@
-# Terms related to Qt library
-pyqt
-qmainwindow
-qtbot
-QTBUG
-qtestlib
-QVTK

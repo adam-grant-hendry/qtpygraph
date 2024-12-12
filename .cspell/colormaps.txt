@@ -1,3 +1,0 @@
-# Names of color maps.
-cmap
-viridis

@@ -40,7 +40,7 @@ htmlcov/
 .tox/
 .nox/
 .coverage
-.coverage.*
+.coverage-*
 .cache
 nosetests.xml
 coverage.xml
@@ -158,3 +158,17 @@ cython_debug/
 
 # Logs
 logs/
+
+# Node files
+node_modules/
+package.json
+package-lock.json
+
+# Coverage
+.coverage*
+
+# Stubs
+stubs/*
+
+# CI
+.ci/*

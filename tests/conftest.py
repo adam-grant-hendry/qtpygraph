@@ -3,91 +3,86 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Callable, Iterator, Sequence
+from typing import TYPE_CHECKING
 
 import pytest
-from _pytest.fixtures import SubRequest
-from bs4 import BeautifulSoup
-from sphinx.testing.path import path
-from sphinx.testing.util import SphinxTestApp
+from qtpy import QtCore, QtWidgets
+
+if TYPE_CHECKING:
+    from collections.abc import Generator, Sequence
+
+    from pytestqt.qtbot import QtBot
 
 # Register plugins to use in testing
 pytest_plugins: str | Sequence[str] = [
-    'sphinx.testing.fixtures',
     'pytester',
 ]
-
 
 # Exclude certain dirs from being collected by the ``pytest`` runner.
 collect_ignore: list[str] = ['roots', '__init__.py']
 
 SRC = str((Path(__file__).parent.parent / 'docs' / 'source').absolute())
 
-# -- Sphinx fixtures ---------------------------------------------------------------------
+# Qt fixtures
 
 
-@pytest.fixture(name='rootdir')
-def fixture_rootdir() -> Iterator[str]:
-    """``emmy`` fixture yielding the source directory for ``sphinx`` documentation.
+@pytest.fixture(autouse=True)
+def clear_settings() -> Generator[None, None, None]:
+    """Teardown fixture for clearing ``Qt`` settings.
 
     Yields
     ------
-    str
-        The source directory for ``sphinx`` documentation.
+    Generator[None, None, None]
+        Waits for program to exit.
     """
-    yield path(SRC).abspath()
+    # Run
+    yield
+
+    # Teardown
+    QtCore.QSettings().clear()
 
 
-@pytest.fixture(name='content')
-def fixture_content(
-    make_app: Callable[..., Any],
-    rootdir: str,
-) -> Iterator[SphinxTestApp]:
-    """``emmy`` fixture yielding the HTML content of the docs.
+@pytest.fixture(name='qmainwindow')
+def fixture_qmainwindow(
+    qtbot: QtBot,
+) -> Generator[QtWidgets.QMainWindow, None, None]:
+    """Fixture for testing a ``QMainWindow``.
+
+    This is used to test custom ``qtpygraph`` widgets, which get added into a
+    ``QMainWindow``.
 
     Parameters
     ----------
-    make_app : Callable[..., Any]
-        A ``sphinx.testing`` fixture. This is a function that creates a ``SphinxTestApp``
-        from provided source and build directories and a provided build generator (e.g.
-        html)
-    rootdir : str
-        Test root directory
+    qtbot : QtBot
+        ``pytest-qt`` fixture for simulating user interaction with ``Qt`` widgets.
 
     Yields
     ------
-    SphinxTestApp
-        The ``SphinxTestApp``.
+    Generator[QtWidgets.QMainWindow, None, None]
+        The ``QMainWindow`` widget added to ``qtbot``.
     """
-    sphinx_app = make_app(
-        buildername='html',
-        srcdir=rootdir,
+    # Setup
+    window = QtWidgets.QMainWindow()
+
+    # When in windows mode (non-headless), window must have focus
+    window.setWindowFlags(
+        QtCore.Qt.WindowTypeWindow
+        | QtCore.Qt.WindowTypeCustomizeWindowHint
+        | QtCore.Qt.WindowTypeWindowStaysOnTopHint
     )
-    sphinx_app.build()
-    yield sphinx_app
 
+    layout = QtWidgets.QVBoxLayout()
+    layout.setSpacing(0)
+    layout.setContentsMargins(0, 0, 0, 0)
 
-@pytest.fixture(name='page')
-def fixture_page(
-    content: SphinxTestApp,
-    request: SubRequest,
-) -> Iterator[BeautifulSoup]:
-    """Fixture yielding a ``BeautifulSoup`` web scraper for a provided ``page``
-    of the docs.
+    window.setLayout(layout)
 
-    Parameters
-    ----------
-    content : SphinxTestApp
-        The HTML content of the docs.
-    request : SubRequest
-        A built-in ``pytest`` fixture for passing information to and from fixtures
+    window.setMouseTracking(True)
+    window.show()
 
-    Yields
-    ------
-    BeautifulSoup
-        A web scraper for the provided ``page`` of the docs. (Uses ``html5lib``.)
-    """
-    page_name = request.param
-    page_content = (content.outdir / page_name).read_text()
+    qtbot.addWidget(window)
 
-    yield BeautifulSoup(page_content, 'html5lib')
+    # Run
+    yield window
+
+    # Teardown - None

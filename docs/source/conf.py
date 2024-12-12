@@ -2,20 +2,25 @@
 
 This file is read by the ``sphinx`` documentation builder to generate our documentation.
 """
-# pylint: disable=invalid-name; sphinx variables are case-sensitive
+
 from __future__ import annotations
 
 import importlib.resources as rsrc
 import os
 import sys
-from datetime import date
+from datetime import datetime, timezone
 
 import qtpygraph
 
 # -- Project information ----------------------------------------------------------------
 
 project = 'QtPyGraph'
-copyright = f'2022-{date.today().year}, Adam Hendry'  # pylint: disable=redefined-builtin
+
+if sys.version_info < (3, 11):
+    copyright = f'2022-{datetime.now(tz=timezone.utc).year}, Adam Hendry'  # noqa: A001
+else:
+    copyright = f'2022-{datetime.now(tz=timezone.UTC).year}, Adam Hendry'  # noqa: A001
+
 author = 'Adam Hendry'
 root_package = 'qtpygraph'
 version = qtpygraph.__version__

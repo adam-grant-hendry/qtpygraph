@@ -1,4 +1,0 @@
-# Names of 3rd party libraries
-libgles
-msvcp
-msvcr

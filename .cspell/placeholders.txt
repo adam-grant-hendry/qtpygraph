@@ -1,2 +1,0 @@
-# Names used as placeholders and dummies throughout this package
-mypackage
